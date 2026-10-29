@@ -1,0 +1,29 @@
+{
+  "lexicon": 1,
+  "id": "community.lexicon.thread.recommend",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "Recommending a thread or a post, like an upvote. Forked from site.standard.graph.recommend.",
+      "record": {
+        "type": "object",
+        "required": [
+          "subject",
+          "createdAt"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The community.lexicon.thread.thread or community.lexicon.thread.post being recommended."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime"
+          }
+        }
+      }
+    }
+  }
+}

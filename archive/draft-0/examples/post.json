@@ -1,0 +1,6 @@
+{
+  "$type": "garden.msg.post",
+  "thread": "at://did:plc:alice123/garden.msg.thread/3m4thread000b",
+  "textContent": "Title, container, author and timestamps, it seems.",
+  "createdAt": "2026-10-22T20:32:00.000Z"
+}

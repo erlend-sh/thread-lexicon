@@ -1,0 +1,91 @@
+{
+  "lexicon": 1,
+  "id": "community.lexicon.thread.thread",
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "tid",
+      "description": "A titled discussion thread, such as a forum thread or a chat channel. Written by its author. Forked from site.standard.document: same field names, plus parent for nesting. Replies are community.lexicon.thread.post records that point at it.",
+      "record": {
+        "type": "object",
+        "required": [
+          "group",
+          "title",
+          "publishedAt"
+        ],
+        "properties": {
+          "group": {
+            "type": "string",
+            "format": "uri",
+            "description": "The group the thread belongs to: a community.lexicon.thread.group (at://), or the group's URL (https://) for a loose thread."
+          },
+          "path": {
+            "type": "string",
+            "description": "Combine with the publication url to build the thread's canonical URL. Starts with a slash."
+          },
+          "parent": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "The thread this one lives in, such as the channel a forum thread was posted to. Absent for a top-level thread, which a forum can feature as a channel with community.lexicon.thread.channel."
+          },
+          "document": {
+            "type": "string",
+            "format": "at-uri",
+            "description": "A site.standard.document that is the same piece of writing, such as a blog post opened up for discussion on a forum. Only counts when the document is in the same repo and links back with community.lexicon.thread.defs#link."
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 5000,
+            "maxGraphemes": 500,
+            "description": "Same limits as site.standard.document#title."
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 30000,
+            "maxGraphemes": 3000,
+            "description": "A short summary written by the author. When it's absent, clients show the start of textContent instead: up to 300 characters and at most 3 paragraphs."
+          },
+          "textContent": {
+            "type": "string",
+            "maxLength": 100000,
+            "maxGraphemes": 10000,
+            "description": "Plain-text rendering of the opening post. Should not contain markdown or other formatting."
+          },
+          "content": {
+            "type": "union",
+            "refs": [],
+            "closed": false,
+            "description": "The opening post in an app-native format. Open union, as in site.standard.document."
+          },
+          "tags": {
+            "type": "array",
+            "maxLength": 100,
+            "items": {
+              "type": "string",
+              "maxLength": 1280,
+              "maxGraphemes": 128
+            },
+            "description": "Avoid prepending tags with hashtags."
+          },
+          "labels": {
+            "type": "union",
+            "refs": [
+              "com.atproto.label.defs#selfLabels"
+            ],
+            "description": "Self-label values. Effectively content warnings."
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the thread was started."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the author last edited the title or opening post. Not the time of the latest reply, which indexers derive from posts."
+          }
+        }
+      }
+    }
+  }
+}

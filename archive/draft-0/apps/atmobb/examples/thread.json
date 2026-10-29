@@ -1,0 +1,16 @@
+{
+  "$type": "garden.msg.thread",
+  "title": "Which board theme should we default to?",
+  "container": "at://did:plc:forum123/app.atmobb.forum.board/3m4board0000a",
+  "url": "https://forum.example/t/did:plc:alice123/3m4thread000b",
+  "textContent": "Vote below. Classic or midnight?",
+  "content": {
+    "$type": "app.atmobb.discussion.defs#threadContent",
+    "body": [
+      { "$type": "app.atmobb.richtext.block#text", "text": "Vote below. Classic or midnight?" }
+    ],
+    "poll": { "options": ["classic", "midnight"] }
+  },
+  "tags": ["meta"],
+  "createdAt": "2026-10-22T21:00:00.000Z"
+}

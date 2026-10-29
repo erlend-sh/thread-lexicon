@@ -1,0 +1,83 @@
+{
+  "lexicon": 1,
+  "id": "app.atmobb.discussion.defs",
+  "description": "atmoBB's native content for threads and replies. threadContent goes in the 'content' open union of community.lexicon.thread.thread; postContent goes in the 'content' union of community.lexicon.thread.post.",
+  "defs": {
+    "threadContent": {
+      "type": "object",
+      "description": "The opening post of an atmoBB topic.",
+      "properties": {
+        "body": {
+          "type": "array",
+          "maxLength": 200,
+          "items": {
+            "type": "union",
+            "refs": [
+              "app.atmobb.richtext.block#text",
+              "app.atmobb.richtext.block#quote",
+              "app.atmobb.richtext.block#code",
+              "app.atmobb.richtext.block#image"
+            ]
+          }
+        },
+        "poll": {
+          "type": "ref",
+          "ref": "#poll"
+        }
+      }
+    },
+    "postContent": {
+      "type": "object",
+      "description": "The body of an atmoBB reply.",
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "type": "array",
+          "maxLength": 200,
+          "items": {
+            "type": "union",
+            "refs": [
+              "app.atmobb.richtext.block#text",
+              "app.atmobb.richtext.block#quote",
+              "app.atmobb.richtext.block#code",
+              "app.atmobb.richtext.block#image"
+            ]
+          }
+        }
+      }
+    },
+    "poll": {
+      "type": "object",
+      "description": "An embedded poll. Votes are app.atmobb.poll.vote records referencing the thread's site.standard.document.",
+      "required": [
+        "options"
+      ],
+      "properties": {
+        "question": {
+          "type": "string",
+          "maxLength": 3000,
+          "maxGraphemes": 300
+        },
+        "options": {
+          "type": "array",
+          "minLength": 2,
+          "maxLength": 10,
+          "items": {
+            "type": "string",
+            "maxLength": 1000,
+            "maxGraphemes": 100
+          }
+        },
+        "multipleChoice": {
+          "type": "boolean"
+        },
+        "closesAt": {
+          "type": "string",
+          "format": "datetime"
+        }
+      }
+    }
+  }
+}

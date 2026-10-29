@@ -1,0 +1,7 @@
+{
+  "$type": "community.lexicon.thread.post",
+  "thread": "at://did:plc:alice123/community.lexicon.thread.thread/3m4thread000b",
+  "document": "at://did:plc:bob789/site.standard.document/3m4essay0001",
+  "textContent": "A long answer on board themes, contrast and e-ink, later republished as an essay on Bob's blog.",
+  "createdAt": "2026-10-22T22:00:00.000Z"
+}

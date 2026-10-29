@@ -1,0 +1,12 @@
+{
+  "$type": "garden.msg.post",
+  "thread": "at://did:plc:alice123/garden.msg.thread/3m4thread000b",
+  "textContent": "Midnight, obviously.",
+  "content": {
+    "$type": "app.atmobb.discussion.defs#postContent",
+    "body": [
+      { "$type": "app.atmobb.richtext.block#text", "text": "Midnight, obviously." }
+    ]
+  },
+  "createdAt": "2026-10-22T21:05:00.000Z"
+}

@@ -1,0 +1,6 @@
+{
+  "$type": "community.lexicon.thread.group",
+  "url": "https://forum.example",
+  "name": "Example Forum",
+  "description": "A forum for people building on the Atmosphere."
+}

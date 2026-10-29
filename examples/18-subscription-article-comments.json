@@ -1,0 +1,7 @@
+{
+  "$type": "community.lexicon.thread.subscription",
+  "group": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/site.standard.publication/3lppk75kw7k26",
+  "thread": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/site.standard.document/3mwehnrqsf22g",
+  "notify": "posts",
+  "createdAt": "2026-10-23T08:01:00.000Z"
+}

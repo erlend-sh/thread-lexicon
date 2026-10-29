@@ -1,0 +1,9 @@
+{
+  "$type": "site.standard.thread.channel",
+  "thread": "at://did:plc:forum123/site.standard.document/3m4chan0000a",
+  "section": "Building",
+  "position": 0,
+  "icon": "#",
+  "description": "Schema design, naming and interop.",
+  "createdAt": "2026-10-20T09:00:00.000Z"
+}

@@ -1,0 +1,7 @@
+{
+  "$type": "community.lexicon.thread.post",
+  "thread": "at://did:plc:alice123/community.lexicon.thread.thread/3m4thread000b",
+  "replyTo": "at://did:plc:bob789/community.lexicon.thread.post/3m4post0000c",
+  "textContent": "Could we ship both and default to the reader's system setting?",
+  "createdAt": "2026-10-22T21:15:00.000Z"
+}

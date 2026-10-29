@@ -1,0 +1,17 @@
+{
+  "lexicon": 1,
+  "id": "site.standard.thread.link",
+  "defs": {
+    "main": {
+      "type": "object",
+      "description": "Marks a site.standard.document as a discussion thread. Goes in the document's 'links' open union. A document carrying it expects site.standard.thread.post records that point at it.",
+      "properties": {
+        "parent": {
+          "type": "string",
+          "format": "at-uri",
+          "description": "The thread (site.standard.document) this one lives in. Absent for a top-level thread, which a forum can feature as a channel with site.standard.thread.channel."
+        }
+      }
+    }
+  }
+}

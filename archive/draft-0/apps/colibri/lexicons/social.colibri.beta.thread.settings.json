@@ -1,0 +1,44 @@
+{
+  "lexicon": 1,
+  "id": "social.colibri.beta.thread.settings",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Colibri-specific settings for a thread, alongside the garden.msg.thread record in the same space. Lives at key 'self' in the thread's own space and is written only by the community. Absent means no anchor, no visibility restriction and no bridge attribution.",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "properties": {
+          "anchor": {
+            "type": "ref",
+            "ref": "social.colibri.beta.defs#spaceRecordRef",
+            "description": "The message the thread was opened from. Its space stays where the thread was opened even after the thread moves to another channel. Mirrors garden.msg.thread 'origin' in structured form."
+          },
+          "visibleToRoles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "record-key",
+              "description": "A role permitted to read."
+            },
+            "description": "Roles that may read this thread. Empty or absent means everyone who can read the parent channel can read the thread. A non-empty list makes the thread private: the community declines space credentials for it to anyone outside the list."
+          },
+          "visibleToMembers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "did",
+              "description": "A member permitted to read."
+            },
+            "description": "Members that may read this thread in addition to visibleToRoles."
+          },
+          "bridged": {
+            "type": "ref",
+            "ref": "social.colibri.beta.bridge.defs#attribution",
+            "description": "Who opened this thread on another service. Honoured only when the community itself wrote the record."
+          }
+        }
+      }
+    }
+  }
+}

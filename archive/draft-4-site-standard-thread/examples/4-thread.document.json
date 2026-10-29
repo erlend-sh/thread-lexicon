@@ -1,0 +1,12 @@
+{
+  "$type": "site.standard.document",
+  "site": "at://did:plc:forum123/site.standard.publication/self",
+  "path": "/t/p4x8n2r6c1/which-board-theme-should-we-default-to",
+  "title": "Which board theme should we default to?",
+  "description": "Vote below. Classic or midnight?",
+  "textContent": "Vote below. Classic or midnight?",
+  "content": { "$type": "dev.atmoboard.defs#markdown", "markdown": "Vote below. **Classic** or **midnight**?" },
+  "tags": ["meta"],
+  "links": { "$type": "site.standard.thread.link", "parent": "at://did:plc:forum123/site.standard.document/3m4chan0000a" },
+  "publishedAt": "2026-10-22T21:00:00.000Z"
+}

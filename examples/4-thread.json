@@ -1,0 +1,17 @@
+{
+  "$type": "community.lexicon.thread.thread",
+  "group": "at://did:plc:forum123/community.lexicon.thread.group/self",
+  "parent": "at://did:plc:forum123/community.lexicon.thread.thread/3m4chan0000a",
+  "path": "/t/p4x8n2r6c1/which-board-theme-should-we-default-to",
+  "title": "Which board theme should we default to?",
+  "description": "Vote below. Classic or midnight?",
+  "textContent": "Vote below. Classic or midnight?",
+  "content": {
+    "$type": "dev.atmoboard.defs#markdown",
+    "markdown": "Vote below. **Classic** or **midnight**?"
+  },
+  "tags": [
+    "meta"
+  ],
+  "publishedAt": "2026-10-22T21:00:00.000Z"
+}

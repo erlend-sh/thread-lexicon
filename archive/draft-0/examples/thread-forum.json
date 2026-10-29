@@ -1,0 +1,13 @@
+{
+  "$type": "garden.msg.thread",
+  "title": "Proposal: a shared threads baseline",
+  "container": "at://did:plc:forum123/app.atmobb.forum.board/3m4board0000a",
+  "url": "https://forum.example/t/3m4thread000b",
+  "textContent": "Colibri and atmoBB both have threads. What do they share?",
+  "content": {
+    "$type": "app.atmobb.discussion.thread#body",
+    "blocks": []
+  },
+  "tags": ["lexicon", "interop"],
+  "createdAt": "2026-10-22T20:30:00.000Z"
+}

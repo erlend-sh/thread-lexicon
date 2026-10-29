@@ -1,0 +1,9 @@
+{
+  "$type": "social.colibri.beta.thread.settings",
+  "anchor": {
+    "space": "at://did:plc:community123/space/social.colibri.beta.channel.text/general",
+    "did": "did:plc:alice123",
+    "rkey": "3m4msg00000d"
+  },
+  "visibleToRoles": ["3m4role0000e"]
+}

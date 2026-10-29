@@ -1,0 +1,7 @@
+{
+  "$type": "site.standard.thread.post",
+  "thread": "at://did:plc:alice123/site.standard.document/3m4thread000b",
+  "replyTo": "at://did:plc:bob789/site.standard.thread.post/3m4reply000c",
+  "textContent": "Classic has better contrast on e-ink, for what it's worth.",
+  "createdAt": "2026-10-22T21:09:00.000Z"
+}

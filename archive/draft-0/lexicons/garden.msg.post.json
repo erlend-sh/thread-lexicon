@@ -1,0 +1,49 @@
+{
+  "lexicon": 1,
+  "id": "garden.msg.post",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A post in a thread (a forum reply or a chat message in a thread). Optional module: apps that already store posts natively may write only garden.msg.thread.",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["thread", "textContent", "createdAt"],
+        "properties": {
+          "thread": {
+            "type": "string",
+            "format": "uri",
+            "description": "The thread this post belongs to: the at:// URI of a garden.msg.thread record, or of the app's native thread record."
+          },
+          "parent": {
+            "type": "string",
+            "format": "uri",
+            "description": "The post this one answers. Absent means it answers the thread itself."
+          },
+          "author": {
+            "type": "string",
+            "format": "did",
+            "description": "Who wrote the post, when the record is written on their behalf."
+          },
+          "textContent": {
+            "type": "string",
+            "maxLength": 100000,
+            "maxGraphemes": 10000,
+            "description": "Plain-text rendering of the post, without markup."
+          },
+          "content": {
+            "type": "union",
+            "refs": [],
+            "description": "The post in an app-native format. Open union."
+          },
+          "createdAt": { "type": "string", "format": "datetime" },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the post was last edited. Absent means never edited."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$type": "site.standard.document",
+  "site": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/site.standard.publication/3lppk75kw7k26",
+  "path": "/3mwehnrqsf22g",
+  "title": "Back to School — Leaflet for Learning",
+  "description": "How teachers and students are using Leaflet this term.",
+  "links": {
+    "$type": "community.lexicon.thread.defs#link",
+    "thread": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/community.lexicon.thread.thread/3m4mirror0001"
+  },
+  "publishedAt": "2026-09-25T19:05:46.382Z"
+}

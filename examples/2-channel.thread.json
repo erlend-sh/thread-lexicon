@@ -1,0 +1,9 @@
+{
+  "$type": "community.lexicon.thread.thread",
+  "group": "at://did:plc:forum123/community.lexicon.thread.group/self",
+  "path": "/c/k3v9qz2m7a/lexicons",
+  "title": "lexicons",
+  "description": "Schema design, naming and interop.",
+  "textContent": "Schema design, naming and interop. Chat here, or open a thread.",
+  "publishedAt": "2026-10-20T09:00:00.000Z"
+}

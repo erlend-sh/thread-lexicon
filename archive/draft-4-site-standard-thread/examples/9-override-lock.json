@@ -1,0 +1,8 @@
+{
+  "$type": "site.standard.thread.override",
+  "subject": "at://did:plc:alice123/site.standard.document/3m4thread000b",
+  "action": "lock",
+  "actor": "did:plc:mod456",
+  "reason": "Poll closed. Midnight won.",
+  "createdAt": "2026-10-25T12:00:00.000Z"
+}

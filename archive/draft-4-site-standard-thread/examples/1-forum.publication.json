@@ -1,0 +1,6 @@
+{
+  "$type": "site.standard.publication",
+  "url": "https://forum.example",
+  "name": "Example Forum",
+  "description": "A forum for people building on the Atmosphere."
+}

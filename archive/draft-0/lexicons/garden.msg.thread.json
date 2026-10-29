@@ -1,0 +1,85 @@
+{
+  "lexicon": 1,
+  "id": "garden.msg.thread",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "A thread: a titled conversation inside a channel, board or other container. Baseline metadata shared across group-chat and forum apps; each app keeps its native thread record and content alongside it. The record lives where the hosting app keeps threads: the author's repo (forums) or the community's repo or space (group chat).",
+      "key": "any",
+      "record": {
+        "type": "object",
+        "required": ["title", "container", "createdAt"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 3000,
+            "maxGraphemes": 300,
+            "description": "The thread's title."
+          },
+          "container": {
+            "type": "string",
+            "format": "uri",
+            "description": "Where the thread lives: an at:// URI of a channel or board record, a space reference, or an https URL. Moving the thread rewrites this field."
+          },
+          "author": {
+            "type": "string",
+            "format": "did",
+            "description": "Who opened the thread. Required in practice when the record is written by someone else on the author's behalf (for example a community account); otherwise the repo owner is the author."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Canonical web address where the thread can be read in the hosting app."
+          },
+          "origin": {
+            "type": "string",
+            "format": "uri",
+            "description": "The message the thread was branched from, if any (a chat thread opened from a message)."
+          },
+          "textContent": {
+            "type": "string",
+            "maxLength": 100000,
+            "maxGraphemes": 10000,
+            "description": "Plain-text rendering of the thread's opening post, without markup, for previews, search and apps that cannot render 'content'."
+          },
+          "content": {
+            "type": "union",
+            "refs": [],
+            "description": "The opening post in an app-native format. Open union: each app supplies its own $type (for example a list of atmoBB rich-text blocks)."
+          },
+          "tags": {
+            "type": "array",
+            "maxLength": 8,
+            "description": "Lowercase topic labels.",
+            "items": { "type": "string", "maxLength": 640, "maxGraphemes": 64 }
+          },
+          "labels": {
+            "type": "union",
+            "refs": ["com.atproto.label.defs#selfLabels"],
+            "description": "Self-applied content warnings."
+          },
+          "locked": {
+            "type": "boolean",
+            "description": "Whether only moderators may add posts. Absent means unlocked."
+          },
+          "closedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the thread was closed or resolved. Absent means open. Apps decide whether a closed thread still accepts posts."
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the thread was opened."
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "When the title or opening post was last edited. Absent means never edited."
+          }
+        }
+      }
+    }
+  }
+}

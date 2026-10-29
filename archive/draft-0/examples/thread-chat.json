@@ -1,0 +1,9 @@
+{
+  "$type": "garden.msg.thread",
+  "title": "Release planning",
+  "container": "https://chat.example/c/example/channel/3m4chan0000c",
+  "author": "did:plc:alice123",
+  "origin": "at://did:plc:alice123/social.colibri.beta.message/3m4msg00000d",
+  "locked": false,
+  "createdAt": "2026-10-22T20:31:00.000Z"
+}

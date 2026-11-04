@@ -1,4 +1,4 @@
-# Atmospheric Threads: `community.lexicon.thread.*` (draft 6)
+# Atmospheric Threads: `community.lexicon.thread.*` (draft 7)
 
 **Premise.** `community.lexicon.thread` is a fork of standard.site that goes on to fully cover threads: forums, chat channels and comments.
 
@@ -11,13 +11,15 @@ standard.site's schema could hold threads, but its maintainers want it to stay f
 | standard.site | community.lexicon.thread | What changes |
 |---|---|---|
 | `site.standard.publication` | **`.group`** | A group (space): in threads, the group is what a publication is to articles. Same fields (`url`, `name`, `description`, `icon`, `basicTheme`, `labels`, `preferences.showInDiscover`). `basicTheme` reuses `site.standard.theme.basic` by reference. |
-| `site.standard.document` | **`.thread`** | Same field names (`path`, `title`, `description`, `textContent`, `content`, `tags`, `labels`, `publishedAt`, `updatedAt`), plus **`parent`** for nesting. Its `group` field replaces `site`. Drops `coverImage`, `bskyPostRef`, `contributors` and `links`. |
+| `site.standard.document` | **`.thread`** | A container with no body: the document's `path`, `title`, `description`, `tags`, `labels`, `publishedAt` and `updatedAt`, plus **`parent`** for nesting. Its `group` field replaces `site`. Drops `textContent` and `content` (the opening post carries the text), and `coverImage`, `bskyPostRef`, `contributors` and `links`. |
 | `site.standard.graph.subscription` | **`.subscription`** | Its `group` field replaces `publication`. Adds optional `thread` and `notify`, so you can join a whole group, or follow one channel or one thread (see Subscriptions). |
 | `site.standard.graph.recommend` | **`.recommend`** | Its `subject` field replaces `document`, and can be a thread or a post. Works like an upvote. |
-| (none) | **`.post`** | A reply, chat message or comment: `thread`, `replyTo`, `textContent` (**required**), `content`, `labels`, `createdAt`, `updatedAt`. `thread` can be a `.thread` or any `site.standard.document`, so it doubles as a comment record for articles. |
+| (none) | **`.post`** | Every message: a thread's opening post, a reply, a chat message or a comment. `thread`, `replyTo`, `document`, `textContent` (**required**), `content`, `labels`, `createdAt`, `updatedAt`. `thread` can be a `.thread` or any `site.standard.document`, so it doubles as a comment record for articles. |
 | (none) | **`.channel`** | Written by the group. Features a top-level thread in the sidebar: `thread`, `section`, `position`, `icon`, `description`. |
 | (none) | **`.override`** | Written by the group. Applies moderation to records it can't edit (move, rename, hide, unhide, lock, unlock, pin, unpin): `subject`, `action`, `toThread`, `title`, `until`, `actor`, `reason`. |
 | verification: `/.well-known/site.standard.publication`, `<link rel="site.standard.document">` | `/.well-known/community.lexicon.thread.group`, `<link rel="community.lexicon.thread.thread">` | Same mechanism, renamed. |
+
+**The opening post is a post.** A `.thread` is only the container: its title, its group and where it sits. Everything said in it is a `.post`, the opening post (OP) included, so the OP is edited, recommended, moderated and rendered the same way as every reply. The OP is the thread author's first post in the thread that answers no other post. Clients write the thread and its OP together, in one `applyWrites` call. A thread can also have no OP: a channel is a thread whose chat is just its posts (examples 4 and 20).
 
 What the fork gains over draft 4:
 - **`parent` is a real field.** Draft 4 hid it inside standard.site's `links` union, and validators don't look inside open unions. Now a bad `parent` is rejected (see the validation below), and standard.site issue #17 doesn't matter here any more.
@@ -44,11 +46,13 @@ Rules for indexers:
 - **The thread has to belong to the group.** A subscription whose `thread` belongs to a different group (by its own `group` field, or its ancestors') is ignored.
 
 ## Publishing both
-Because the fork keeps standard.site's field names, the same piece of writing can be published as both a `site.standard.document` and a `.thread`, and converting one into the other is mostly copying fields. That gives two things:
-- **A blog post gets a comment section.** A Leaflet author also writes a `.thread` for their post. Any threads client can then show the post with its replies, and reader apps keep showing the article (examples 13 and 14).
-- **A forum post becomes an article.** A long thread or a single long reply gets a `site.standard.document` too, so it shows up in reader and discovery apps (example 15).
+The same piece of writing can be published as both a `site.standard.document` and a `.post`. Since draft 7 the pair is always an article and a post, never an article and a thread. That gives two things:
+- **A blog post gets a comment section.** A Leaflet author also writes a `.thread` for their post, with the post's text as its opening post. Any threads client can then show the post with its replies, and reader apps keep showing the article (examples 13, 21 and 14).
+- **A forum post becomes an article.** A long opening post or a single long reply gets a `site.standard.document` too, so it shows up in reader and discovery apps (example 15).
 
-The two records point at each other. The thread or post has a `document` field, and the document carries `community.lexicon.thread.defs#link` in its `links` union. **A pair only counts when both records are in the same repo and each points at the other**, so nobody can attach someone else's article to their thread. Replies point at the thread. A reader showing the document finds them through the link, and older `.post` records that point straight at a document still count as comments on it.
+The two records point at each other. The post has a `document` field, and the document carries `community.lexicon.thread.defs#link` in its `links` union, naming the post. **A pair only counts when both records are in the same repo and each points at the other**, so nobody can attach someone else's article to their thread. Replies are the other posts in the paired post's thread. A reader showing the document finds them through the link, and `.post` records that point straight at a document still count as comments on it.
+
+Draft 6 paired the article with the `.thread` itself, which carried the text. That made the thread one record and saved a copy, but it gave the OP a different shape from every other post. Draft 7 gives that up so the container and the OP are independent.
 
 Rules kept from atmo-board (`docs/all-threads.md`):
 - **Threads all the way down.** A channel is a top-level `.thread` that the group features with a `.channel` record.
@@ -58,14 +62,14 @@ Rules kept from atmo-board (`docs/all-threads.md`):
 
 ## Files
 - `lexicons/community.lexicon.thread.{group,thread,post,channel,override,subscription,recommend,defs}.json`
-- `examples/1–19`: a forum's group, a channel thread and its sidebar entry, a thread, a chat post, a reply, a reply to a reply, a comment on a real Leaflet article, lock and move overrides, a subscription, a recommend, the publishing-both pair (a Leaflet post as a thread, the document linking back, and a forum post republished as an article), and granular subscriptions (a channel, a thread, an article's comments, and a channel followed quietly).
+- `examples/1–21`: a forum's group, a channel thread and its sidebar entry, a thread and its opening post (4 and 20), a chat post, a reply, a reply to a reply, a comment on a real Leaflet article, lock and move overrides, a subscription, a recommend, the publishing-both pair (a Leaflet post as a thread with its opening post, the document linking back to that post, and a forum reply republished as an article: 13, 21, 14 and 15), and granular subscriptions (a channel, a thread, an article's comments, and a channel followed quietly).
 - `demo/threads-lexicon-website.html`: the threads-lexicon website demo, a frontend-only reader of `community.lexicon.thread.*` records. It shows Atmosphere Community (simulated from its Discourse forum) in two places with the same records: at its own site, our.atmosphere.community, as a dense grid board, and as a group space on mu.social (mu.social/groupspace/@atmosphere.community) as cards. `demo/src/` holds the build (`build.py`, `template.html`, and `mu.py` for the articles).
 - `standard-site-remit.md`: what standard.site covers.
 - `archive/draft-4-site-standard-thread/`: the previous draft, which tried to put threads under `site.standard.thread.*`. `archive/draft-0/` holds the first baseline.
 
-**Validation.** Checked with `@atproto/lexicon`. All 19 examples pass. These are rejected:
-- a post without `thread` or `textContent`
-- a thread without `title`, or with a `parent` or `document` that isn't an at-uri
+**Validation.** Checked with `@atproto/lexicon`. All 21 examples pass. These are rejected:
+- a post without `thread` or `textContent`, or with a `document` that isn't an at-uri
+- a thread without `title`, or with a `parent` that isn't an at-uri
 - a group without `url`
 - a channel without `position`
 - an override without `action`
@@ -75,8 +79,8 @@ Rules kept from atmo-board (`docs/all-threads.md`):
 One gap: validators don't look inside open unions, so a malformed `defs#link` inside a document's `links` still passes. Apps have to check it themselves.
 
 ## Lessons from the demo
-- **`textContent` isn't reliable upstream.** Leaflet writes none, and standard.site's own docs put MDX source in it. That's why `.post` requires it, and `.thread` should always write it too.
-- **Descriptions fall back to the opening post.** A thread's `description` is optional. When the author didn't write one, the board shows the start of `textContent`: up to 300 characters and at most 3 paragraphs. Discourse's excerpts are generated, so the demo leaves them out and derives them this way.
+- **`textContent` isn't reliable upstream.** Leaflet writes none, and standard.site's own docs put MDX source in it. That's why `.post` requires it, and every message, the opening post included, is a `.post`.
+- **Descriptions fall back to the opening post.** A thread's `description` is optional. When the author didn't write one, the board shows the start of the opening post's `textContent`: up to 300 characters and at most 3 paragraphs. Discourse's excerpts are generated, so the demo leaves them out and derives them this way.
 - **Activity is derived.** `updatedAt` keeps standard.site's meaning (the author's last edit). The board's activity column is the newest post's `createdAt`, which an indexer computes.
 
 ## Open questions
@@ -87,3 +91,4 @@ One gap: validators don't look inside open unions, so a malformed `defs#link` in
 5. **Titles are required.** Every thread needs one, as with documents. Untitled chat lives in a channel's posts, so nothing is lost so far.
 6. **Muting.** Subscriptions are public records, so `notify: "none"` means following quietly, not muting. Muting a thread or a person is a private choice and belongs in app preferences or a private space, not a public record.
 7. **Barazo.** `forum.barazo.topic.*` is the closest prior art, and it was already moving towards standard.site's shape. It's worth inviting into the working group.
+8.**Naming the OP.** The OP is found by a rule (the thread author's first post that answers no other post). The thread could name it instead, with an optional `op` field, since a client can pick the post's record key before writing both. That's more explicit, but it lets a thread point at a post that doesn't exist.

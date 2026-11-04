@@ -1,10 +1,8 @@
 {
   "$type": "community.lexicon.thread.thread",
   "group": "https://lab.leaflet.pub",
-  "document": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/site.standard.document/3mwehnrqsf22g",
   "path": "/3mwehnrqsf22g",
   "title": "Back to School — Leaflet for Learning",
   "description": "How teachers and students are using Leaflet this term.",
-  "textContent": "How teachers and students are using Leaflet this term.",
   "publishedAt": "2026-09-25T19:05:46.382Z"
 }

@@ -13,14 +13,14 @@ So threads get their own lexicon. `community.lexicon.thread` is a fork of standa
 | standard.site | community.lexicon.thread |
 |---|---|
 | `publication` (a blog) | **`group`**: a group (space), such as a forum or a community. Same fields. |
-| `document` (a post) | **`thread`**: same field names, plus `parent`, so threads nest. A channel is a top-level thread. |
+| `document` (a post) | **`thread`**: a container with the document's title and path fields, plus `parent`, so threads nest. It has no body. A channel is a top-level thread. |
 | `graph.subscription` | **`subscription`**: join a whole group, or follow one channel or thread, with a `notify` level. |
 | `graph.recommend` | **`recommend`**: an upvote on a thread or a post. |
-| (none) | **`post`**: a reply, a chat message or a comment on an article. |
+| (none) | **`post`**: every message, the thread's opening post included: replies, chat messages and comments on articles. |
 | (none) | **`channel`**: the group features a thread in its sidebar. |
 | (none) | **`override`**: the group moderates records it doesn't own (lock, move, hide, pin). |
 
-Because the two share a baseline, one piece of writing can be published as both. A Leaflet post can also be a thread, which gives it a comment section in any threads app. A long forum post can also be an article, so it reaches reader apps. The two records point at each other from the same repo.
+One piece of writing can be published as both an article and a post. A Leaflet post can also be the opening post of a thread, which gives it a comment section in any threads app. A long forum post can also be an article, so it reaches reader apps. The article and the post point at each other from the same repo.
 
 The lexicon would live under `community.lexicon.*`, run by Lexicon Community, as a proposal from a Threads working group. It's a draft, and none of these records exist on the network yet. The full draft, with its rules and open questions, is in [`SPEC.md`](SPEC.md).
 
@@ -36,7 +36,7 @@ Controls at the top:
 - **Site** switches between the two.
 - **Show record fields** labels every element with the record field it comes from. Hovering a label highlights what it labels. Counts, posters and latest activity are marked *derived*: an indexer computes them from posts, so they aren't stored in any record.
 
-Other things to try: click a channel chip to narrow the board to it, follow a group, channel or thread to see the subscription records it would write, and open "Notes from the October meetup", a thread that is also published as an article. The demo makes no network requests.
+Other things to try: click a channel chip to narrow the board to it, follow a group, channel or thread to see the subscription records it would write, and open "Notes from the October meetup", a thread whose opening post is also published as an article. The demo makes no network requests.
 
 A thread with no written `description` shows the start of its opening post on the board: up to 300 characters and at most 3 paragraphs.
 
@@ -55,9 +55,9 @@ python3 build.py          # writes ../threads-lexicon-website.html
 
 ## What's in this repo
 
-- [`SPEC.md`](SPEC.md): the lexicon draft (draft 6). It covers the fork, subscriptions, publishing both, the rules for indexers, validation and open questions.
+- [`SPEC.md`](SPEC.md): the lexicon draft (draft 7). It covers the fork, subscriptions, publishing both, the rules for indexers, validation and open questions.
 - [`lexicons/`](lexicons/): the `community.lexicon.thread.*` schemas: `group`, `thread`, `post`, `channel`, `override`, `subscription`, `recommend` and `defs`.
-- [`examples/`](examples/): 19 example records, all valid against the schemas.
+- [`examples/`](examples/): 21 example records, all valid against the schemas.
 - [`demo/`](demo/): the website export and its source.
 - [`standard-site-remit.md`](standard-site-remit.md): what standard.site covers, and what it leaves out.
 - [`apps/atmobb/`](apps/atmobb/): an example of app-native content (atmoBB) carried in the `content` union of threads and posts.

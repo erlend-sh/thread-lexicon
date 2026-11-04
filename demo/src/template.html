@@ -177,7 +177,8 @@ button.chan:focus-visible { outline: 2px solid var(--site-accent); outline-offse
 .board-note code { font-family: var(--font-mono); font-size: 12px; }
 .thread-title { font: 700 clamp(26px, 4.4vw, 34px)/1.2 var(--font-ui); margin: 0 0 8px; text-wrap: balance; }
 .stream { list-style: none; margin: 0; padding: 0; }
-.tpost.op { margin-top: 24px; }
+.tpost.op { margin-top: 8px; }
+.thread-meta { font-size: 14px; }
 /* with record fields on, each record is its own box: the thread or document in blue, each post in green */
 #site.fields .rec { --rec: #2f6fd6; position: relative; border: 2px solid var(--rec); border-radius: 12px; padding: 30px 14px 14px; margin: 18px 0; background: color-mix(in srgb, var(--rec) 5%, transparent); }
 #site.fields .rec-post { --rec: #1f8a52; padding-top: 30px; }
@@ -188,7 +189,6 @@ button.chan:focus-visible { outline: 2px solid var(--site-accent); outline-offse
 #site.fields .img-field:has(> .fl:hover) img { box-shadow: 0 0 0 6px var(--badge-bg); }
 #site.fields .rl { display: block; cursor: help; z-index: 2; position: absolute; top: 0; left: 0; font: 600 11px/1 var(--font-mono); background: var(--rec); color: #fff; padding: 5px 9px; border-radius: 9px 0 8px 0; max-width: calc(100% - 20px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #site.fields .rec .tpost.op, #site.fields .stream .tpost { border-top: 0; }
-#site.fields .rec .tpost.op { padding-bottom: 0; margin-top: 6px; }
 /* hover lights up the innermost field or record under the pointer */
 #site.fields [data-field], #site.fields .rec { transition: background-color .12s; }
 #site.fields [data-field]:has(> .fl:hover) { background: color-mix(in srgb, var(--badge-bg) 75%, transparent); }
@@ -350,16 +350,18 @@ function addFieldLabels() {
 
 /* ---------- the board and its threads ---------- */
 const initial = n => esc(((n || '?').replace(/^@/, '').trim()[0] || '?').toUpperCase())
-// publishing both: a thread and a site.standard.document are one piece of writing when they sit in the same repo and point at each other
+// publishing both: a post (usually a thread's opening post) and a site.standard.document are one piece of writing when they sit in the same repo and point at each other
 const repoOf = uri => uri.split('/')[2]
-const pairLink = (s, rec) => {
-  const d = rec.value.document && (s.documents || []).find(x => x.uri === rec.value.document)
-  return d && repoOf(d.uri) === repoOf(rec.uri) && d.value.links?.thread === rec.uri
+const pairLink = (s, post) => {
+  const d = post.value.document && (s.documents || []).find(x => x.uri === post.value.document)
+  return d && repoOf(d.uri) === repoOf(post.uri) && d.value.links?.post === post.uri
     ? `<div class="paired" data-field="document + defs#link"><span>Also published as an article, a <code>site.standard.document</code> on ${esc(s.publication.value.name)}, so standard.site readers show it too.</span></div>` : ''
 }
 const authorOf = (s, d) => d.author || { name: s.handle || s.did, handle: s.handle }
-// activity comes only from records: the newest of the document's publishedAt / updatedAt and its replies' createdAt / updatedAt
-const lastActivity = d => [d.value.publishedAt, d.value.updatedAt, ...(d.replies || []).flatMap(r => [r.value.createdAt, r.value.updatedAt])].filter(Boolean).sort().pop()
+// a thread is only a container; everything said in it is a post, the opening post (op) first
+const postsOf = d => [...(d.op ? [d.op] : []), ...(d.replies || [])]
+// activity comes only from records: the newest of the thread's publishedAt / updatedAt and its posts' createdAt / updatedAt
+const lastActivity = d => [d.value.publishedAt, d.value.updatedAt, ...postsOf(d).flatMap(r => [r.value.createdAt, r.value.updatedAt])].filter(Boolean).sort().pop()
 const ago = iso => {
   if (!iso) return ''
   const m = (Date.now() - new Date(iso)) / 60000
@@ -406,10 +408,11 @@ const mySubsRaw = s => { const r = mySubs(s); return r.length ? `<details class=
 ICONS.bell = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 11.5V7a4 4 0 0 1 8 0v4.5l1.2 1.2H2.8zM6.5 14h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>'
 // a thread's description, or when none was written, the start of its opening post: up to 300 characters, at most 3 paragraphs
 const DESC_MAX = 300, DESC_PARAS = 3
-function threadDesc(v) {
+function threadDesc(d) {
+  const v = d.value
   if (v.description) return { paras: v.description.split(/\n{2,}/).map(p => p.trim()).filter(Boolean), derived: false }
   const out = []; let left = DESC_MAX
-  for (const p of (v.textContent || '').split(/\n{2,}/).map(p => p.replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, DESC_PARAS)) {
+  for (const p of (d.op?.value.textContent || '').split(/\n{2,}/).map(p => p.replace(/\s+/g, ' ').trim()).filter(Boolean).slice(0, DESC_PARAS)) {
     if (p.length <= left) { out.push(p); left -= p.length; continue }
     const cut = p.slice(0, left), sp = cut.lastIndexOf(' ')
     out.push((sp > left * .6 ? cut.slice(0, sp) : cut).replace(/[\s,.;:–-]+$/, '') + '…'); break
@@ -462,11 +465,11 @@ function renderThreadIndex(s) {
           <span class="t-tags">${parent ? `<button type="button" class="chan" data-chan="${esc(parent.uri)}" title="Show only ${esc(chanName(parent))}"${f(k, COLS.chan)}>${esc(chanName(parent))}</button>` : `<span class="chan muted"${f(k, COLS.chan)}>no channel</span>`}
           ${(fs => fs ? `<span class="following" title="Following this ${fs.via}">${ICONS.bell}${NOTIFY[fs.notify]}</span>` : '')(effectiveSub(s, d))}
           <div class="faces" title="${n + 1} posts"${f(k, COLS.faces)}>${faces.map(av).join('')}</div></span></div>
-        ${(td => td.paras.length ? `<div class="t-desc"${f(k, td.derived ? 'derived · textContent, 300 chars / 3 ¶' : 'thread.description')}>${td.paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : '')(threadDesc(d.value))}
+        ${(td => td.paras.length ? `<div class="t-desc"${f(k, td.derived ? 'derived · opening post textContent, 300 chars / 3 ¶' : 'thread.description')}>${td.paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : '')(threadDesc(d))}
       </li>`
     }).join('')}</ol>`
   return `${bar}${list}
-    <p class="muted board-note">These are <code>${TL}.thread</code> records, a fork of standard.site's document for threads. The channel is the thread's <code>parent</code>, named by a <code>${TL}.channel</code> record. Posters, replies and activity are derived from <code>${TL}.post</code> records. Subscribe to the whole group here, or open a thread to follow just it or its channel. Each is one <code>${TL}.subscription</code> in your repo, and the most specific one wins.</p>
+    <p class="muted board-note">These are <code>${TL}.thread</code> records, a fork of standard.site's document for threads. A thread is only a container: its opening post is a <code>${TL}.post</code> like every reply. The channel is the thread's <code>parent</code>, named by a <code>${TL}.channel</code> record. Posters, replies and activity are derived from <code>${TL}.post</code> records. Subscribe to the whole group here, or open a thread to follow just it or its channel. Each is one <code>${TL}.subscription</code> in your repo, and the most specific one wins.</p>
     ${mySubsRaw(s)}`
 }
 const PAGE = 10
@@ -478,34 +481,34 @@ function renderThread(s, d) {
   const replies = all.slice(0, shownReplies), more = all.length - replies.length
   const pubName = s.displayName || pubOf(s).value.name, pubIcon = s.iconData
   const chan = (s.channels || []).find(c => c.uri === v.parent)
-  const num = Object.fromEntries(all.map((r, k) => [r.uri, { n: k + 2, who: r.author?.name || 'someone' }]))
-  const bsky = v.bskyPostRef?.uri?.match(/^at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)$/)
-  const postHead = (who, handle, when, n, field) => `<div class="tpost-head"><b data-field="author: repo DID → handle">${esc(who)}</b>${handle && handle !== who ? `<span class="muted">@${esc(handle)}</span>` : ''}<span class="muted" title="${esc(when)}" data-field="${field}">${fmtDate(when)}</span><span class="n muted">#${n}</span></div>`
+  // posts are numbered from the opening post, which is #1 when there is one
+  const first = d.op ? 2 : 1, shown = [...(d.op ? [d.op] : []), ...replies]
+  const num = Object.fromEntries(postsOf(d).map((r, k) => [r.uri, { n: k + 1, who: r.author?.name || 'someone' }]))
+  const postHead = (who, handle, when, n) => `<div class="tpost-head"><b data-field="author: repo DID → handle">${esc(who)}</b>${handle && handle !== who ? `<span class="muted">@${esc(handle)}</span>` : ''}<span class="muted" title="${esc(when)}" data-field="createdAt">${fmtDate(when)}</span><span class="n muted">#${n}</span></div>`
+  const postItem = (r, n) => {
+    const isOp = r === d.op, to = r.value.replyTo && num[r.value.replyTo]
+    const paras = (r.value.textContent || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
+    return `<li class="tpost rec rec-post${isOp ? ' op' : ''}" data-rec="${TL}.post · ${esc(r.author?.handle || r.author?.name || 'someone')}${isOp ? ' · opening post' : ''}"><div class="avatar" aria-hidden="true">${initial(r.author?.name)}</div><div style="min-width:0">
+      ${postHead(r.author?.name || 'someone', r.author?.handle, r.value.createdAt, n)}
+      ${to ? `<div class="replying muted" data-field="replyTo">↩ replying to ${esc(to.who)} (#${to.n})</div>` : ''}
+      <div class="body" data-field="textContent">${paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>
+      ${pairLink(s, r)}
+    </div></li>`
+  }
   return `<article>
     <button class="back" type="button" id="backBtn">← All threads in ${pubIcon ? `<img class="mini" src="${esc(pubIcon)}" alt="">` : `<span class="mini" aria-hidden="true">${esc((pubName || '?').trim()[0])}</span>`} <b>${esc(pubName)}</b></button>
     <div class="follow-row">${followCtl(s, d.uri, 'Follow thread')}${chan ? followCtl(s, chan.uri, `Follow ${chanName(chan)}`) : ''}</div>
     <section class="rec rec-doc" data-rec="${esc(v.$type)} · ${esc(a.handle || a.name)}">
       <h2 class="thread-title" data-field="title">${esc(v.title)}</h2>
       ${v.tags?.length ? `<div class="tags" data-field="tags">${v.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>` : ''}
-      <div class="tpost op"><div class="avatar" aria-hidden="true">${initial(a.name)}</div><div style="min-width:0">
-        ${postHead(a.name, a.handle, v.publishedAt, 1, 'publishedAt')}
-        ${docBody(s, d)}
-      </div></div>
-      ${pairLink(s, d)}
+      <div class="muted thread-meta">Started <span data-field="publishedAt">${fmtDate(v.publishedAt)}</span> by ${esc(a.name)}</div>
     </section>
     <ol class="stream">
-      ${replies.map((r, k) => {
-        const to = r.value.replyTo && num[r.value.replyTo]
-        const paras = (r.value.textContent || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
-        return `<li class="tpost rec rec-post" data-rec="${TL}.post · ${esc(r.author?.handle || r.author?.name || 'someone')}"><div class="avatar" aria-hidden="true">${initial(r.author?.name)}</div><div style="min-width:0">
-          ${postHead(r.author?.name || 'someone', r.author?.handle, r.value.createdAt, k + 2, 'createdAt')}
-          ${to ? `<div class="replying muted" data-field="replyTo">↩ replying to ${esc(to.who)} (#${to.n})</div>` : ''}
-          <div class="body" data-field="textContent">${paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>
-        </div></li>`
-      }).join('')}
+      ${d.op ? postItem(d.op, 1) : ''}
+      ${replies.map((r, k) => postItem(r, k + first)).join('')}
     </ol>
-    ${more > 0 ? `<div class="more"><button class="btn ghost" type="button" id="moreBtn">Show ${Math.min(PAGE, more)} more ${more === 1 ? 'reply' : 'replies'}</button><span class="muted">${replies.length} of ${all.length} shown</span></div>` : ''}
-    ${all.length ? '' : `<div class="notice">No ${TL}.post records point at this thread yet, so the thread is just its opening post.${bsky ? ` Its publisher keeps the conversation on <a href="https://bsky.app/profile/${bsky[1]}/post/${bsky[2]}" target="_blank" rel="noopener">Bluesky</a> instead (bskyPostRef).` : ''}</div>`}
+    ${more > 0 ? `<div class="more"><button class="btn ghost" type="button" id="moreBtn">Show ${Math.min(PAGE, more)} more ${more === 1 ? 'reply' : 'replies'}</button><span class="muted">${replies.length} of ${all.length} replies shown</span></div>` : ''}
+    ${!d.op ? `<div class="notice">This thread has no opening post. It's a container whose posts are all ${TL}.post records that point at it.</div>` : all.length ? '' : `<div class="notice">No one has replied yet, so the thread is just its opening post.</div>`}
     <div class="composer">
       <label class="lbl" for="replyBox">Reply</label>
       <textarea id="replyBox" placeholder="Write a reply…"></textarea>
@@ -518,15 +521,9 @@ function renderThread(s, d) {
       </div>
       ${mySubsRaw(s)}
       <details class="raw"><summary>View the ${esc(v.$type)} record</summary><pre>${esc(JSON.stringify({ uri: d.uri, value: v }, null, 2))}</pre></details>
-      ${replies.length ? `<details class="raw"><summary>View the ${plural(replies.length, TL + '.post record')} shown</summary><pre>${esc(JSON.stringify(replies.map(r => ({ uri: r.uri, value: r.value })), null, 2))}</pre></details>` : ''}
+      ${shown.length ? `<details class="raw"><summary>View the ${plural(shown.length, TL + '.post record')} shown</summary><pre>${esc(JSON.stringify(shown.map(r => ({ uri: r.uri, value: r.value })), null, 2))}</pre></details>` : ''}
     </footer>
   </article>`
-}
-
-function docBody(s, d) {
-  const paras = (d.value.textContent || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
-  return paras.length ? `<div class="body" data-field="textContent">${paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>`
-    : `<div class="notice">This thread has no <code>textContent</code>.</div>`
 }
 
 document.addEventListener('click', e => { if (e.target.closest('#backBtn')) go(cur) })

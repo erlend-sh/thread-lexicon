@@ -9,6 +9,11 @@ def as_thread(d):
   parent=(v.pop('links',None) or {}).get('parent')
   if parent: v['parent']=parent
   if 'site' in v: v['group']=v.pop('site')  # a thread names its group, where a document names its site
+  # a thread is only a container: its text becomes the opening post, a .post in the same repo
+  text=v.pop('textContent',None); v.pop('content',None)
+  if text and 'author' in d:
+    d['op']={'uri':d['uri'].replace(f'{T}.thread/',f'{T}.post/').replace('doc','op'),'author':d['author'],
+      'value':{'$type':f'{T}.post','thread':d['uri'],'textContent':text,'createdAt':v['publishedAt']}}
   return d
 # one community, one set of records: a .group for its threads and a site.standard.publication for its articles, both at our.atmosphere.community
 URL='https://our.atmosphere.community'
@@ -17,7 +22,7 @@ std=sim['publication']; std['value']['url']=URL
 sim['threadSite']=ren(std); sim['threadSite']['value']['$type']=f'{T}.group'
 sim['publication']={'uri':std['uri'],'value':{**std['value']}}
 sim['threads']=[as_thread(d) for d in sim['documents']]
-# Discourse's excerpts are generated, not written, so these threads have no description and the board derives one from textContent
+# Discourse's excerpts are generated, not written, so these threads have no description and the board derives one from the opening post
 for d in sim['threads']: d['value'].pop('description',None)
 sim['channels']=[{**c,**as_thread({'uri':c['uri'],'value':c['value']})} for c in sim['channels']]
 for c in sim['channels']: c['channel']=ren(c['channel'])
@@ -25,7 +30,7 @@ from mu import articles
 lexch=next(c['uri'] for c in sim['channels'] if c['value']['title']=='Lexicon Community')
 sim['documents'],mirror=articles(sim['publication']['uri'],sim['threadSite']['uri'],lexch)
 sim['threads'].append(mirror)
-SIM=f"Records for Atmosphere Community, built from its Discourse forum's public JSON: the community as a {T}.group, each topic as a {T}.thread whose parent is its channel, channels as {T}.channel records and every reply as a {T}.post. Its articles are site.standard.document records, and Lars's meetup notes are published both ways. None of this exists on the network yet."
+SIM=f"Records for Atmosphere Community, built from its Discourse forum's public JSON: the community as a {T}.group, each topic as a {T}.thread whose parent is its channel, channels as {T}.channel records, and every post, the opening one included, as a {T}.post. Its articles are site.standard.document records, and Lars's meetup notes are published both ways. None of this exists on the network yet."
 sim['simulated']=f"{SIM} This is the community's own site, which shows its board as a dense grid. mu.social shows the same records as cards."
 sim['layout']='grid'
 # the same records, read by another client: mu.social shows the community as a group space

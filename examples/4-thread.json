@@ -5,11 +5,6 @@
   "path": "/t/p4x8n2r6c1/which-board-theme-should-we-default-to",
   "title": "Which board theme should we default to?",
   "description": "Vote below. Classic or midnight?",
-  "textContent": "Vote below. Classic or midnight?",
-  "content": {
-    "$type": "dev.atmoboard.defs#markdown",
-    "markdown": "Vote below. **Classic** or **midnight**?"
-  },
   "tags": [
     "meta"
   ],

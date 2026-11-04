@@ -5,14 +5,14 @@
     "link": {
       "type": "object",
       "required": [
-        "thread"
+        "post"
       ],
-      "description": "Goes in a site.standard.document's links union to say the document is also published as a thread (or a post). The pair only counts when both records are in the same repo and point at each other.",
+      "description": "Goes in a site.standard.document's links union to say the document is also published as a post, usually a thread's opening post. The pair only counts when both records are in the same repo and point at each other.",
       "properties": {
-        "thread": {
+        "post": {
           "type": "string",
           "format": "at-uri",
-          "description": "The community.lexicon.thread.thread or community.lexicon.thread.post that is the same piece of writing."
+          "description": "The community.lexicon.thread.post that is the same piece of writing. Replies are the other posts in its thread."
         }
       }
     }

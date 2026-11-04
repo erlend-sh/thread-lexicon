@@ -23,11 +23,13 @@ def articles(pub_uri, site_uri, channel_uri):
   documents = [{'uri': f'at://{did(k)}/site.standard.document/simart{i:03d}', 'author': author(k), 'replies': [],
                 'value': {'$type': 'site.standard.document', 'site': pub_uri, 'path': f'/a/{slug(title)}', 'title': title, 'description': excerpt, 'textContent': excerpt, 'publishedAt': f'{day}T09:00:00.000Z'}}
                for i, (k, day, title, excerpt) in enumerate(ARTICLES)]
-  # publishing both: each record points at the other from the same repo
+  # publishing both: the article and the thread's opening post point at each other from the same repo
   art = documents[3]; th_uri = f'at://{did("lars")}/{T}.thread/simmirror'
-  art['value']['links'] = {'$type': f'{T}.defs#link', 'thread': th_uri}
+  op = post('lars', 89, th_uri, art['value']['publishedAt'], art['value']['textContent'])
+  op['value']['document'] = art['uri']
+  art['value']['links'] = {'$type': f'{T}.defs#link', 'post': op['uri']}
   replies = [post('omar', 90, th_uri, '2026-10-02T15:10:00.000Z', 'Both. Root for fetching, parent for rendering. Same as app.bsky.feed.post does.'),
              post('sofia', 91, th_uri, '2026-10-02T16:40:00.000Z', 'Thanks for writing this up. The slides from the lexicon talk would be great to link here too.')]
-  mirror = {'uri': th_uri, 'author': author('lars'), 'replies': replies, 'value': {'$type': f'{T}.thread', 'group': site_uri, 'parent': channel_uri, 'document': art['uri'],
-    'path': f'/t/{slug(art["value"]["title"])}', 'title': art['value']['title'], 'description': art['value']['description'], 'textContent': art['value']['textContent'], 'publishedAt': art['value']['publishedAt']}}
+  mirror = {'uri': th_uri, 'author': author('lars'), 'op': op, 'replies': replies, 'value': {'$type': f'{T}.thread', 'group': site_uri, 'parent': channel_uri,
+    'path': f'/t/{slug(art["value"]["title"])}', 'title': art['value']['title'], 'description': art['value']['description'], 'publishedAt': art['value']['publishedAt']}}
   return documents, mirror

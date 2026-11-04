@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "key": "tid",
-      "description": "A post in a thread: a chat message, a forum reply or a comment on an article alike. Written by its author. A channel's untitled chat is the posts whose thread is the channel's own thread record.",
+      "description": "A post in a thread: a thread's opening post, a chat message, a forum reply or a comment on an article alike. Written by its author. A thread's opening post (OP) is its author's first post in it that answers no other post. A channel's untitled chat is the posts whose thread is the channel's own thread record.",
       "record": {
         "type": "object",
         "required": [
@@ -27,7 +27,7 @@
           "document": {
             "type": "string",
             "format": "at-uri",
-            "description": "A site.standard.document that republishes this post as a long-form article. Only counts when the document is in the same repo and links back with community.lexicon.thread.defs#link."
+            "description": "A site.standard.document that is the same piece of writing, such as a thread's opening post that is also a blog post, or a long reply republished as an article. Only counts when the document is in the same repo and links back with community.lexicon.thread.defs#link."
           },
           "textContent": {
             "type": "string",

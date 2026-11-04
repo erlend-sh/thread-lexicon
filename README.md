@@ -29,7 +29,7 @@ The lexicon would live under `community.lexicon.*`, run by Lexicon Community, as
 The demo is a pure threads-lexicon demo. It reads `community.lexicon.thread.*` records the way an app would and renders them as a website. It shows one community in two places:
 
 - **our.atmosphere.community**: Atmosphere Community's own site. It's simulated from the forum's public Discourse JSON: 30 topics as `thread` records in their channels, with every reply as a `post`. Four articles are published as `site.standard.document`, and one of them is also a thread. The board is a dense grid.
-- **mu.social/space/@atmosphere.community**: the same community, read by a different client (mu.social's Group Spaces). It uses the same records, so threads, replies and follows are shared. The board is cards.
+- **mu.social/groupspace/@atmosphere.community**: the same community, read by a different client (mu.social's Group Spaces). It uses the same records, so threads, replies and follows are shared. The board is cards.
 
 Controls at the top:
 

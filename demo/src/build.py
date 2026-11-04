@@ -29,7 +29,7 @@ SIM=f"Records for Atmosphere Community, built from its Discourse forum's public 
 sim['simulated']=f"{SIM} This is the community's own site, which shows its board as a dense grid. mu.social shows the same records as cards."
 sim['layout']='grid'
 # the same records, read by another client: mu.social shows the community as a group space
-sim['views']=[{'url':'https://mu.social/space/@atmosphere.community','client':'mu.social','simulated':f"{SIM} This is mu.social showing the same community as a group space. It reads the same records as our.atmosphere.community, so threads, replies and follows are shared, in its card layout.",'layout':'cards'}]
+sim['views']=[{'url':'https://mu.social/groupspace/@atmosphere.community','client':'mu.social','simulated':f"{SIM} This is mu.social showing the same community as a group space. It reads the same records as our.atmosphere.community, so threads, replies and follows are shared, in its card layout.",'layout':'cards'}]
 s=[sim]  # the demo is one community, shown by its own site and by mu.social
 json.dump(s,open('snapshot.json','w'),separators=(',',':'))
 t=open('template.html').read(); sj=open('snapshot.json').read().replace('</','<\\/')

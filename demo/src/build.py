@@ -1,7 +1,4 @@
 import json
-s=json.load(open('snapshot.json')); s=[x for x in s if not x.get('simulated')]
-# the blogs kept for the demo: Leaflet's lab notes and notes.erlend.sh
-s=[x for x in s if x['publication']['value'].get('url') in ('https://lab.leaflet.pub','https://notes.erlend.sh')]
 sim=json.loads(open('discourse-sim.json').read().replace('did:web:discourse.atmosphere.community','did:web:atmosphere.community'))
 # the forum publishes community.lexicon.thread.* records, the fork of standard.site for threads
 T='community.lexicon.thread'
@@ -33,11 +30,11 @@ sim['simulated']=f"{SIM} This is the community's own site, which shows its board
 sim['layout']='grid'
 # the same records, read by another client: mu.social shows the community as a group space
 sim['views']=[{'url':'https://mu.social/space/@atmosphere.community','client':'mu.social','simulated':f"{SIM} This is mu.social showing the same community as a group space. It reads the same records as our.atmosphere.community, so threads, replies and follows are shared, in its card layout.",'layout':'cards'}]
-s.insert(0,sim)  # the community comes first: it's what the threads lexicon is for
+s=[sim]  # the demo is one community, shown by its own site and by mu.social
 json.dump(s,open('snapshot.json','w'),separators=(',',':'))
 t=open('template.html').read(); sj=open('snapshot.json').read().replace('</','<\\/')
-# everything the page needs goes inside it: fonts, the two libraries and the snapshot's images (see fetch-inline.py)
+# everything the page needs goes inside it, so it works offline: the fonts (see fetch-inline.py)
 inl=lambda f: open(f).read().replace('</script','<\\/script')
-for k,f in [('__FONTS__','fonts-inline.css'),('__MARKED__','marked.min.js'),('__PURIFY__','purify.min.js'),('__BLOBS__','blobs.json')]: t=t.replace(k,inl(f))
+for k,f in [('__FONTS__','fonts-inline.css')]: t=t.replace(k,inl(f))
 open('../threads-lexicon-website.html','w').write(t.replace('__SNAPSHOT__',sj).replace('__SNAPDATE__','27 Oct 2026'))
 print(len(sj))

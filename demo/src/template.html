@@ -4,7 +4,7 @@
 <style>/* IBM Plex Mono, Newsreader and Public Sans (latin), inlined so the page needs no network */
 __FONTS__</style>
 <style>
-/* Layout: a thin reader chrome (address bar + controls) above a full-width "website" rendered only from standard.site fields. */
+/* Layout: a thin reader chrome (address bar + controls) above a full-width "website" rendered only from community.lexicon.thread.* records. */
 :root {
   --chrome-bg: #eef0f3;
   --chrome-fg: #1d2330;
@@ -55,10 +55,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .chrome button { cursor: pointer; }
 .chrome button[aria-pressed="true"] { background: var(--chrome-accent); color: var(--chrome-field); border-color: var(--chrome-accent); }
 .chrome button:focus-visible, .chrome select:focus-visible, .chrome input:focus-visible { outline: 2px solid var(--chrome-accent); outline-offset: 1px; }
-.load { display: flex; gap: 6px; flex: 1 1 280px; min-width: 0; }
-.load input { flex: 1; min-width: 0; font-family: var(--font-mono); }
-.status { font-size: 13px; color: var(--chrome-muted); min-height: 1.2em; }
-.status.err { color: #c2412d; }
 .lbl { font-size: 12px; color: var(--chrome-muted); }
 
 /* ---------- the site ---------- */
@@ -77,27 +73,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .btn:focus-visible { outline: 2px solid var(--site-fg); outline-offset: 2px; }
 .count { font-variant-numeric: tabular-nums; font-size: 13px; }
 
-.doc-list { list-style: none; margin: 0; padding: 0; }
-.doc-item { padding-block: 20px; border-bottom: 1px solid color-mix(in srgb, var(--site-fg) 10%, transparent); display: grid; gap: 4px; }
-.doc-item button.title { all: unset; cursor: pointer; font-family: var(--font-read); font-weight: 600; font-size: 22px; line-height: 1.25; text-wrap: balance; }
-.doc-item button.title:hover { color: var(--site-accent); }
-.doc-item button.title:focus-visible { outline: 2px solid var(--site-accent); outline-offset: 2px; }
-.meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; align-items: center; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.tag { font-size: 12px; padding: 1px 8px; border-radius: 999px; background: color-mix(in srgb, var(--site-accent) 14%, transparent); color: var(--site-fg); }
-.excerpt { font-family: var(--font-read); font-size: 17px; margin: 2px 0 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-
 .back { all: unset; cursor: pointer; font-size: 14px; color: var(--site-accent); display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
 .back .mini { width: 20px; height: 20px; border-radius: 5px; object-fit: cover; background: var(--site-accent); color: var(--site-accent-fg); display: inline-grid; place-items: center; font-weight: 700; font-size: 12px; }
 .back b { font-weight: 600; }
 .back:focus-visible { outline: 2px solid var(--site-accent); }
-.cover { width: 100%; max-width: 100%; border-radius: 10px; margin-bottom: 24px; aspect-ratio: 1200 / 630; object-fit: cover; }
-.doc-title { font-family: var(--font-read); font-weight: 600; font-size: clamp(30px, 5vw, 42px); line-height: 1.12; margin: 0 0 10px; text-wrap: balance; }
-.doc-desc { font-family: var(--font-read); font-style: italic; font-size: 20px; margin: 0 0 14px; }
 .body { font-family: var(--font-read); font-size: 19px; line-height: 1.65; margin-top: 28px; max-width: 65ch; }
 .body p { margin: 0 0 1em; white-space: pre-line; overflow-wrap: anywhere; }
 .paired { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; font: 14px/1.5 var(--font-ui); margin: 18px 0 0; padding: 10px 14px; border-radius: 10px; background: color-mix(in srgb, var(--site-accent) 9%, transparent); }
-.paired .btn { margin-left: auto; }
 .notice { font-family: var(--font-ui); font-size: 14px; line-height: 1.5; border: 1.5px dashed color-mix(in srgb, var(--site-fg) 30%, transparent); border-radius: 10px; padding: 14px 16px; margin: 24px 0; }
 .notice code, .doc-foot code { font-family: var(--font-mono); font-size: 12.5px; }
 .doc-foot { margin-top: 36px; padding-top: 20px; border-top: 1px solid color-mix(in srgb, var(--site-fg) 14%, transparent); display: grid; gap: 14px; }
@@ -106,8 +88,6 @@ details.raw pre { font-family: var(--font-mono); font-size: 12px; line-height: 1
 .sim { font-size: 13px; line-height: 1.5; border-radius: 10px; padding: 10px 14px; margin-bottom: 24px; background: var(--badge-bg); color: var(--badge-fg); }
 .sim code { font-family: var(--font-mono); font-size: 12px; }
 .gap { font-style: italic; }
-.fmt { font-family: var(--font-ui); font-size: 12.5px; margin-top: 28px; padding: 6px 10px; border-radius: 6px; background: color-mix(in srgb, var(--site-accent) 10%, transparent); }
-.fmt code { font-family: var(--font-mono); font-size: 12px; }
 .body h3, .body h4 { font-family: var(--font-ui); line-height: 1.25; margin: 1.6em 0 .6em; text-wrap: balance; }
 .body h3 { font-size: 24px; } .body h4 { font-size: 19px; }
 .body ul, .body ol { margin: 0 0 1em; padding-left: 1.4em; } .body li { margin: .25em 0; } .body li > p { margin: 0; }
@@ -115,21 +95,7 @@ details.raw pre { font-family: var(--font-mono); font-size: 12px; line-height: 1
 .body pre { font-family: var(--font-mono); font-size: 13.5px; line-height: 1.5; padding: 12px 14px; border-radius: 8px; overflow-x: auto; background: color-mix(in srgb, var(--site-fg) 6%, transparent); white-space: pre; }
 .body code { font-family: var(--font-mono); font-size: .85em; }
 .body hr { border: 0; border-top: 1px solid color-mix(in srgb, var(--site-fg) 20%, transparent); margin: 2em 0; }
-.body figure { margin: 0 0 1em; } .body img { display: block; max-width: 100%; height: auto; border-radius: 8px; }
-.body figcaption, .imgph { font-family: var(--font-ui); font-size: 13px; opacity: .7; }
-.imgph { display: block; padding: 18px; border-radius: 8px; border: 1.5px dashed color-mix(in srgb, var(--site-fg) 25%, transparent); margin: 0 0 1em; }
-.body sup.fn { cursor: help; color: var(--site-accent); }
-.body mark { background: color-mix(in srgb, var(--site-accent) 25%, transparent); color: inherit; }
-.card { display: block; text-decoration: none; font-family: var(--font-ui); font-size: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--site-fg) 16%, transparent); margin: 0 0 1em; color: var(--site-fg) !important; }
-.card b { display: block; color: var(--site-accent); } .card span { display: block; opacity: .7; overflow-wrap: anywhere; }
-.subpage { border-left: 2px solid color-mix(in srgb, var(--site-fg) 15%, transparent); padding-left: 16px; margin: 0 0 1em; }
-.unsupported { font-family: var(--font-ui); font-size: 13px; opacity: .6; margin: 0 0 1em; }
-.seg { display: inline-flex; align-items: center; gap: 0; }
-.seg .lbl { margin-right: 6px; }
-.chrome .seg button { border-radius: 0; margin-left: -1px; }
-.chrome .seg button:first-of-type { border-radius: 8px 0 0 8px; margin-left: 0; }
-.chrome .seg button:last-of-type { border-radius: 0 8px 8px 0; }
-/* thread lens */
+/* the board */
 .threadlist { list-style: none; margin: 0; padding: 0; font: 15px var(--font-ui); font-variant-numeric: tabular-nums; }
 /* the card's padding bleeds outside the column, so titles line up with the site header above */
 .threadlist { margin-inline: -12px; }
@@ -207,8 +173,8 @@ button.chan:focus-visible { outline: 2px solid var(--site-accent); outline-offse
 .faces .av { margin-left: -6px; box-shadow: 0 0 0 2px var(--site-bg); }
 .faces .av:first-child { margin-left: 0; }
 .av { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; font: 600 9px var(--font-ui); flex: none; }
-.lens-note { font-size: 13px; margin-top: 14px; line-height: 1.6; }
-.lens-note code { font-family: var(--font-mono); font-size: 12px; }
+.board-note { font-size: 13px; margin-top: 14px; line-height: 1.6; }
+.board-note code { font-family: var(--font-mono); font-size: 12px; }
 .thread-title { font: 700 clamp(26px, 4.4vw, 34px)/1.2 var(--font-ui); margin: 0 0 8px; text-wrap: balance; }
 .stream { list-style: none; margin: 0; padding: 0; }
 .tpost.op { margin-top: 24px; }
@@ -250,7 +216,7 @@ button.chan:focus-visible { outline: 2px solid var(--site-accent); outline-offse
 #site.fields [data-field] { position: relative; outline: 1.5px dashed color-mix(in srgb, var(--badge-fg) 55%, transparent); outline-offset: 3px; }
 #site.fields [data-field] > .fl { display: block; cursor: help; position: absolute; top: -10px; right: -4px; z-index: 2; font: 500 10.5px/1.4 var(--font-mono); background: var(--badge-bg); color: var(--badge-fg); padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
 #site.fields .tpost-head [data-field] > .fl { top: -15px; } #site.fields .tpost-head b[data-field] > .fl { right: auto; left: -4px; } #site.fields .tpost-head span[data-field] > .fl { top: 50%; transform: translateY(-50%); right: auto; left: calc(100% + 8px); }
-#site.fields .doc-item button.title[data-field] > .fl, #site.fields .pub-name[data-field] > .fl { top: -14px; }
+#site.fields .pub-name[data-field] > .fl { top: -14px; }
 @media (prefers-reduced-motion: no-preference) { .site .view { animation: fade .18s ease-out; } @keyframes fade { from { opacity: .4 } to { opacity: 1 } } }
 @media (max-width: 520px) { .pub-head { grid-template-columns: 1fr; } .verify { display: none; } }
 </style>
@@ -264,48 +230,28 @@ button.chan:focus-visible { outline: 2px solid var(--site-accent); outline-offse
     </div>
   </div>
   <div class="chrome-row">
-    <div class="seg" role="group" aria-label="View">
-      <span class="lbl">View</span>
-      <button type="button" data-lens="article" aria-pressed="true">Article lens</button>
-      <button type="button" data-lens="thread" aria-pressed="false">Thread lens</button>
-    </div>
     <label class="lbl" for="pick">Site</label>
     <select id="pick"></select>
     <button id="fieldsBtn" aria-pressed="false" type="button">Show record fields</button>
-    <button id="contentBtn" aria-pressed="true" type="button" title="Render content formats that standard.site doesn't define">Render app formats</button>
-    <form class="load" id="loadForm">
-      <label class="lbl" for="loadInput" hidden>Load a publication</label>
-      <input id="loadInput" placeholder="handle, DID, at:// URI or https:// site" autocomplete="off">
-      <button type="submit">Load live</button>
-    </form>
   </div>
-  <div class="status" id="status" role="status"></div>
 </header>
 
 <main class="site" id="site"></main>
 
-<script>/* marked 12.0.2 */
-__MARKED__</script>
-<script>/* DOMPurify 3.1.6 */
-__PURIFY__</script>
-<script type="application/json" id="blobs">__BLOBS__</script>
 <script type="application/json" id="snapshot">__SNAPSHOT__</script>
 <script>
 const $ = (s, el = document) => el.querySelector(s)
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]))
 const SNAPSHOT_DATE = '__SNAPDATE__'
 // a site can also be read by another client at its own url (views); each view shares the site's records, not a copy
-const sites = JSON.parse($('#snapshot').textContent).flatMap(s => [s, ...(s.views || []).map(v => ({ ...s, view: v, simulated: v.simulated, layout: v.layout }))]).map(s => ({ ...s, source: 'snapshot' }))
+const sites = JSON.parse($('#snapshot').textContent).flatMap(s => [s, ...(s.views || []).map(v => ({ ...s, view: v, simulated: v.simulated, layout: v.layout }))])
 let cur = 0, view = { name: 'index' }
 
 const rgb = c => c && Number.isInteger(c.r) ? `rgb(${c.r} ${c.g} ${c.b})` : null
 const fmtDate = d => d ? new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : ''
 const trimSlash = u => (u || '').replace(/\/+$/, '')
 const canonical = (pub, doc) => trimSlash(pub.value.url) + (doc ? (doc.value.path || '') : '')
-const siteUrl = s => s.view ? s.view.url : s.publication.value.url
-// snapshot images are inlined by cid; a live site's images come from its PDS
-const BLOBS = JSON.parse($('#blobs').textContent)
-const blobUrl = (s, blob) => !blob ? null : BLOBS[blob.ref?.$link] || (s.pds ? `${s.pds}/xrpc/com.atproto.sync.getBlob?did=${s.did}&cid=${blob.ref?.$link}` : null)
+const siteUrl = s => s.view ? s.view.url : pubOf(s).value.url
 const plural = (n, w, many) => n == null ? '' : `${n} ${n === 1 ? w : (many || w + 's')}`
 
 function applyTheme(pub) {
@@ -319,31 +265,30 @@ function applyTheme(pub) {
 
 function renderPicker() {
   // the picker names each site by its domain, the way a reader would type it
-  $('#pick').innerHTML = sites.map((s, i) => `<option value="${i}">${esc((siteUrl(s) || s.handle || s.did).replace(/^https?:\/\//, '').replace(/\/$/, ''))}${s.source === 'live' ? ' (live)' : s.simulated ? ' (simulated)' : ''}</option>`).join('')
+  $('#pick').innerHTML = sites.map((s, i) => `<option value="${i}">${esc((siteUrl(s) || s.handle || s.did).replace(/^https?:\/\//, '').replace(/\/$/, ''))}${s.simulated ? ' (simulated)' : ''}</option>`).join('')
   $('#pick').value = cur
 }
 
-// a site can publish both: a site.standard.publication for its articles and a community.lexicon.thread.group for its threads
-const pubOf = s => lens === 'thread' && s.threadSite ? s.threadSite : s.publication
+// the group is the space the threads live in: a community.lexicon.thread.group record
+const pubOf = s => s.threadSite
 function renderAddr(s, doc) {
   const url = s.view ? trimSlash(s.view.url) + (doc ? (doc.value.path || '') : '') : canonical(pubOf(s), doc)
   const m = url.match(/^(https?:\/\/)([^/]+)(.*)$/)
   $('#addr').innerHTML = m ? `<span>${m[1]}</span><b>${esc(m[2])}</b>${esc(m[3])}` : esc(url)
-  const [pubType, docType] = isThreadSite(s) ? [`${TL}.group`, `${TL}.thread`] : ['site.standard.publication', 'site.standard.document']
+  const [pubType, docType] = [`${TL}.group`, `${TL}.thread`]
   if (s.view) { $('#verify').textContent = `${s.view.client} reading ${trimSlash(pubOf(s).value.url).replace(/^https?:\/\//, '')}'s records`; return }
   $('#verify').textContent = doc ? `verify: <link rel="${docType}">` : `verify: /.well-known/${pubType}`
 }
 
 const TL = 'community.lexicon.thread'
-const isThreadSite = s => pubOf(s).value.$type === `${TL}.group`
-const items = s => lens === 'thread' && s.threads ? s.threads : s.documents
+const items = s => s.threads
 function render() {
   const s = sites[cur], pub = pubOf(s), v = pub.value
   const themed = applyTheme(pub)
   const doc = view.name === 'doc' ? items(s)[view.i] : null
-  const P = isThreadSite(s) ? 'thread.group' : 'publication'
+  const P = 'thread.group'
   renderAddr(s, doc)
-  const icon = s.iconData || blobUrl(s, v.icon)
+  const icon = s.iconData
   const head = `
     <header class="pub-head">
       ${icon ? `<img class="pub-icon" src="${esc(icon)}" alt="" data-field="${P}.icon">` : `<div class="pub-icon" aria-hidden="true" data-field="(no icon)">${esc((v.name || '?').trim()[0])}</div>`}
@@ -352,33 +297,27 @@ function render() {
         ${v.description ? `<p class="pub-desc muted" data-field="${P}.description">${esc(v.description)}</p>` : ''}
       </div>
       <div class="pub-actions">
-        ${lens === 'thread' ? followCtl(s, null, 'Subscribe') : `<button class="btn" type="button" data-field="graph.subscription" id="subBtn">Subscribe</button>`}
-        <span class="count muted">${s.subscribers != null ? plural(s.subscribers + (lens === 'thread' && subOf(s, null) ? 1 : 0), 'subscriber') : ''}</span>
+        ${followCtl(s, null, 'Subscribe')}
+        <span class="count muted">${s.subscribers != null ? plural(s.subscribers + (subOf(s, null) ? 1 : 0), 'subscriber') : ''}</span>
         <span class="count muted">${themed ? '' : 'No basicTheme, so default colours'}</span>
       </div>
     </header>`
-  const body = lens === 'thread' ? (doc ? renderThread(s, doc) : renderThreadIndex(s)) : (doc ? renderDoc(s, doc) : renderIndex(s))
+  const body = doc ? renderThread(s, doc) : renderThreadIndex(s)
   const sim = s.simulated ? `<div class="sim"><strong>Simulated.</strong> ${esc(s.simulated)}</div>` : ''
   // a post page focuses on the post: the publication header only shows on the index
   $('#site').innerHTML = `<div class="wrap view">${sim}${doc ? '' : head}${body}</div>
-    <footer class="site-foot muted">Rendered from ${s.source === 'live' ? 'live records' : s.simulated ? `simulated records (${esc(SNAPSHOT_DATE)})` : `a snapshot taken ${esc(SNAPSHOT_DATE)}`} of <code>${esc(s.handle || s.did)}</code>. ${showFormats ? `Uses ${s.threads && lens === 'thread' ? `${TL}.*` : 'site.standard.*'} fields, plus the Leaflet and markdown content formats where a post has them.` : `Only ${s.threads && lens === 'thread' ? `${TL}.*` : 'site.standard.*'} fields are used.`}</footer>`
+    <footer class="site-foot muted">Rendered from ${s.simulated ? `simulated records (${esc(SNAPSHOT_DATE)})` : `a snapshot taken ${esc(SNAPSHOT_DATE)}`} of <code>${esc(s.handle || s.did)}</code>. Only <code>${TL}.*</code> fields are used.</footer>`
   if (!doc) {
     $('#homeLink').onclick = () => go(cur)
     $('#homeLink').onkeydown = e => { if (e.key === 'Enter') $('#homeLink').click() }
-    if ($('#subBtn')) $('#subBtn').onclick = e => { e.target.textContent = 'Would write site.standard.graph.subscription' }
   }
   $('#site').querySelectorAll('[data-doc]').forEach(b => b.onclick = e => { e.preventDefault(); go(cur, +b.dataset.doc) })
   addFieldLabels()
   const hb = $('#headsBtn'); if (hb) hb.onclick = () => { showHeads = !showHeads; try { localStorage.setItem('boardHeads', showHeads ? 'on' : 'off') } catch {}; render() }
   $('#site').querySelectorAll('[data-chan]').forEach(b => b.onclick = () => { chanFilter = b.dataset.chan ? { site: cur, uri: b.dataset.chan } : null; render() })
   $('#site').querySelectorAll('li[data-row], tr[data-row]').forEach(r => r.onclick = e => { if (!e.target.closest('button, a')) go(cur, +r.dataset.row) })
-  const rec = $('#recBtn'); if (rec) rec.onclick = () => { rec.textContent = `Would write ${doc && doc.value.$type === TL + '.thread' ? TL + '.recommend' : 'site.standard.graph.recommend'}` }
+  const rec = $('#recBtn'); if (rec) rec.onclick = () => { rec.textContent = `Would write ${TL}.recommend` }
   const mb = $('#moreBtn'); if (mb) mb.onclick = () => { shownReplies += PAGE; render() }
-  $('#site').querySelectorAll('[data-pair]').forEach(b => b.onclick = () => {
-    const [l, i] = b.dataset.pair.split('-')
-    lens = l; syncLens(); try { localStorage.setItem('lens', lens) } catch {}
-    go(cur, +i)
-  })
   $('#site').querySelectorAll('[data-follow]').forEach(b => b.onclick = e => {
     e.stopPropagation()
     const k = b.dataset.follow
@@ -409,31 +348,14 @@ function addFieldLabels() {
   })
 }
 
-/* ---------- thread lens: the same records read as a forum ---------- */
+/* ---------- the board and its threads ---------- */
 const initial = n => esc(((n || '?').replace(/^@/, '').trim()[0] || '?').toUpperCase())
-// publishing both: a thread (or post) and a document are one piece of writing when they sit in the same repo and point at each other
+// publishing both: a thread and a site.standard.document are one piece of writing when they sit in the same repo and point at each other
 const repoOf = uri => uri.split('/')[2]
-function pairOf(s, rec) {
-  const v = rec.value
-  if (v.$type === `${TL}.thread` && v.document) {
-    const i = s.documents.findIndex(d => d.uri === v.document)
-    const d = s.documents[i]
-    return d && repoOf(d.uri) === repoOf(rec.uri) && d.value.links?.thread === rec.uri ? { lens: 'article', i, rec: d } : null
-  }
-  if (v.links?.$type === `${TL}.defs#link`) {
-    const i = (s.threads || []).findIndex(t => t.uri === v.links.thread)
-    const t = (s.threads || [])[i]
-    return t && repoOf(t.uri) === repoOf(rec.uri) && t.value.document === rec.uri ? { lens: 'thread', i, rec: t } : null
-  }
-  return null
-}
 const pairLink = (s, rec) => {
-  const p = pairOf(s, rec)
-  if (!p) return ''
-  const n = p.rec.replies?.length || 0
-  return p.lens === 'article'
-    ? `<div class="paired" data-field="document + defs#link"><span>Also published as an article on ${esc(s.publication.value.name)}.</span><button class="btn ghost" type="button" data-pair="${p.lens}-${p.i}">Read it as an article</button></div>`
-    : `<div class="paired" data-field="links: defs#link + thread.document"><span>Also published as a thread${n ? ` with ${plural(n, 'reply', 'replies')}` : ''}.</span><button class="btn ghost" type="button" data-pair="${p.lens}-${p.i}">Open the thread</button></div>`
+  const d = rec.value.document && (s.documents || []).find(x => x.uri === rec.value.document)
+  return d && repoOf(d.uri) === repoOf(rec.uri) && d.value.links?.thread === rec.uri
+    ? `<div class="paired" data-field="document + defs#link"><span>Also published as an article, a <code>site.standard.document</code> on ${esc(s.publication.value.name)}, so standard.site readers show it too.</span></div>` : ''
 }
 const authorOf = (s, d) => d.author || { name: s.handle || s.did, handle: s.handle }
 // activity comes only from records: the newest of the document's publishedAt / updatedAt and its replies' createdAt / updatedAt
@@ -503,7 +425,7 @@ function renderGrid(s, rows, chans) {
     <table class="threadgrid">
     <colgroup>${GRID_COLS.map(([k]) => `<col class="c-${k}">`).join('')}</colgroup>
     <thead><tr class="headrow"${showHeads ? '' : ' hidden'}>${GRID_COLS.map(([k, label, icon]) => `<th class="c-${k}"${icon ? ` title="${label}" aria-label="${label}"` : ''}>${icon || label}</th>`).join('')}</tr>
-      <tr class="fieldrow">${GRID_COLS.filter(([k]) => k !== 'age').map(([k]) => `<th class="c-${k}"${k === 'num' ? ' colspan="2"' : ''}><span>${k === 'title' ? (s.threads ? 'thread.title' : 'document.title') : k === 'num' ? 'derived · from posts' : COLS[k]}</span></th>`).join('')}</tr></thead>
+      <tr class="fieldrow">${GRID_COLS.filter(([k]) => k !== 'age').map(([k]) => `<th class="c-${k}"${k === 'num' ? ' colspan="2"' : ''}><span>${k === 'title' ? 'thread.title' : k === 'num' ? 'derived · from posts' : COLS[k]}</span></th>`).join('')}</tr></thead>
     <tbody>${rows.map(({ d, i, act }) => {
       const n = d.replies?.length || 0
       const people = [authorOf(s, d), ...(d.replies || []).map(r => r.author).filter(Boolean)]
@@ -522,7 +444,7 @@ function renderGrid(s, rows, chans) {
 let showHeads = false
 try { showHeads = localStorage.getItem('boardHeads') === 'on' } catch {}
 function renderThreadIndex(s) {
-  if (!items(s).length) return `<p class="notice">This publication has no site.standard.document records pointing at it.</p>`
+  if (!items(s).length) return `<p class="notice">This group has no ${TL}.thread records yet.</p>`
   const chans = Object.fromEntries((s.channels || []).map(c => [c.uri, c]))
   const only = chanFilter?.site === cur ? chans[chanFilter.uri] : null
   const rows = items(s).map((d, i) => ({ d, i, act: lastActivity(d) })).filter(r => !only || r.d.value.parent === only.uri).sort((a, b) => (b.act || '').localeCompare(a.act || ''))
@@ -536,15 +458,15 @@ function renderThreadIndex(s) {
       const faces = [...new Map(people.map(p => [p.handle || p.name, p])).values()].slice(0, 5)
       const parent = chans[d.value.parent]
       return `<li data-row="${i}">
-        <div class="t-top"><a class="title" href="#site-${cur}-doc-${i}" data-doc="${i}"${f(k, s.threads ? 'thread.title' : 'document.title')}>${esc(d.value.title)}</a><span class="t-meta"><span class="t-age" title="${act ? `Last activity ${fmtDate(act)}` : ''}"${f(k, COLS.age)}>${ago(act)}</span><span class="stat" title="${plural(n, 'reply', 'replies')}"${f(k, COLS.num)}>${ICONS.replies}${n}</span></span>
+        <div class="t-top"><a class="title" href="#site-${cur}-doc-${i}" data-doc="${i}"${f(k, 'thread.title')}>${esc(d.value.title)}</a><span class="t-meta"><span class="t-age" title="${act ? `Last activity ${fmtDate(act)}` : ''}"${f(k, COLS.age)}>${ago(act)}</span><span class="stat" title="${plural(n, 'reply', 'replies')}"${f(k, COLS.num)}>${ICONS.replies}${n}</span></span>
           <span class="t-tags">${parent ? `<button type="button" class="chan" data-chan="${esc(parent.uri)}" title="Show only ${esc(chanName(parent))}"${f(k, COLS.chan)}>${esc(chanName(parent))}</button>` : `<span class="chan muted"${f(k, COLS.chan)}>no channel</span>`}
           ${(fs => fs ? `<span class="following" title="Following this ${fs.via}">${ICONS.bell}${NOTIFY[fs.notify]}</span>` : '')(effectiveSub(s, d))}
           <div class="faces" title="${n + 1} posts"${f(k, COLS.faces)}>${faces.map(av).join('')}</div></span></div>
-        ${(td => td.paras.length ? `<div class="t-desc"${f(k, td.derived ? 'derived · textContent, 300 chars / 3 ¶' : (s.threads ? 'thread' : 'document') + '.description')}>${td.paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : '')(threadDesc(d.value))}
+        ${(td => td.paras.length ? `<div class="t-desc"${f(k, td.derived ? 'derived · textContent, 300 chars / 3 ¶' : 'thread.description')}>${td.paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>` : '')(threadDesc(d.value))}
       </li>`
     }).join('')}</ol>`
   return `${bar}${list}
-    <p class="muted lens-note">${s.threads ? `These are <code>${TL}.thread</code> records, a fork of standard.site's document for threads. The channel is the thread's <code>parent</code>, named by a <code>${TL}.channel</code> record.` : `These are <code>site.standard.document</code> records, read as comment threads.`} Posters, replies and activity are derived from <code>${TL}.post</code> records${s.simulated || s.threads ? '' : ', and no site in this snapshot has any yet'}. Subscribe to the whole site here, or open a thread to follow just it or its channel. Each is one <code>${TL}.subscription</code> in your repo, and the most specific one wins.</p>
+    <p class="muted board-note">These are <code>${TL}.thread</code> records, a fork of standard.site's document for threads. The channel is the thread's <code>parent</code>, named by a <code>${TL}.channel</code> record. Posters, replies and activity are derived from <code>${TL}.post</code> records. Subscribe to the whole group here, or open a thread to follow just it or its channel. Each is one <code>${TL}.subscription</code> in your repo, and the most specific one wins.</p>
     ${mySubsRaw(s)}`
 }
 const PAGE = 10
@@ -554,7 +476,7 @@ function renderThread(s, d) {
   const v = d.value, a = authorOf(s, d), all = d.replies || []
   if (shownFor !== d.uri) { shownFor = d.uri; shownReplies = PAGE }
   const replies = all.slice(0, shownReplies), more = all.length - replies.length
-  const pubName = s.displayName || pubOf(s).value.name, pubIcon = s.iconData || blobUrl(s, pubOf(s).value.icon)
+  const pubName = s.displayName || pubOf(s).value.name, pubIcon = s.iconData
   const chan = (s.channels || []).find(c => c.uri === v.parent)
   const num = Object.fromEntries(all.map((r, k) => [r.uri, { n: k + 2, who: r.author?.name || 'someone' }]))
   const bsky = v.bskyPostRef?.uri?.match(/^at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)$/)
@@ -583,7 +505,7 @@ function renderThread(s, d) {
       }).join('')}
     </ol>
     ${more > 0 ? `<div class="more"><button class="btn ghost" type="button" id="moreBtn">Show ${Math.min(PAGE, more)} more ${more === 1 ? 'reply' : 'replies'}</button><span class="muted">${replies.length} of ${all.length} shown</span></div>` : ''}
-    ${all.length ? '' : `<div class="notice">No ${TL}.post records point at this ${v.$type === TL + '.thread' ? 'thread' : 'document'} yet, so the thread is just its opening post.${bsky ? ` Its publisher keeps the conversation on <a href="https://bsky.app/profile/${bsky[1]}/post/${bsky[2]}" target="_blank" rel="noopener">Bluesky</a> instead (bskyPostRef).` : ''}</div>`}
+    ${all.length ? '' : `<div class="notice">No ${TL}.post records point at this thread yet, so the thread is just its opening post.${bsky ? ` Its publisher keeps the conversation on <a href="https://bsky.app/profile/${bsky[1]}/post/${bsky[2]}" target="_blank" rel="noopener">Bluesky</a> instead (bskyPostRef).` : ''}</div>`}
     <div class="composer">
       <label class="lbl" for="replyBox">Reply</label>
       <textarea id="replyBox" placeholder="Write a reply…"></textarea>
@@ -601,69 +523,10 @@ function renderThread(s, d) {
   </article>`
 }
 
-function renderIndex(s) {
-  if (!s.documents.length && s.threads) return `<p class="notice">This site publishes ${plural(s.threads.length, `${TL}.thread record`)} and no site.standard.document records, so a standard.site reader shows nothing here. Switch to thread lens to read it.</p>`
-  if (!s.documents.length) return `<p class="notice">This publication has no site.standard.document records pointing at it.</p>`
-  return `<ul class="doc-list">${s.documents.map((d, i) => {
-    const v = d.value
-    return `<li class="doc-item">
-      <button class="title" type="button" data-doc="${i}" data-field="title">${esc(v.title)}</button>
-      <div class="meta muted">
-        <span data-field="publishedAt">${fmtDate(v.publishedAt)}</span>
-        ${d.recommends ? `<span class="count">${plural(d.recommends, 'recommend')}</span>` : ''}
-        ${!v.textContent ? `<span>no textContent</span>` : ''}
-
-      </div>
-      ${v.description ? `<p class="excerpt" data-field="description">${esc(v.description)}</p>` : ''}
-      ${v.tags?.length ? `<div class="tags" data-field="tags">${v.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>` : ''}
-    </li>`
-  }).join('')}</ul>`
-}
-
 function docBody(s, d) {
-  const v = d.value, url = canonical(pubOf(s), d)
-  const paras = (v.textContent || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
-  const rich = showFormats ? renderContent(s, v.content) : null
-  const ctype = v.content?.$type
-  return `
-    ${rich ? `<div class="fmt">Rendered from <code>content</code> as <code>${esc(ctype)}</code>, a format standard.site doesn't define. Turn off "Render app formats" to see the standard fields only.</div>
-    <div class="body" data-field="content · ${esc(ctype)}">${rich}</div>`
-    : paras.length ? `<div class="body" data-field="textContent">${paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>
-      ${ctype ? `<div class="notice">The post is also in <code>content</code> as <code>${esc(ctype)}</code>, which this reader ${KNOWN[ctype] ? 'can render with "Render app formats" on' : "can't render"}. It shows <code>textContent</code> instead.</div>` : ''}`
-    : `<div class="notice">This document has no <code>textContent</code>, so a reader that only knows standard.site has nothing to show.${ctype ? ` The post lives in <code>content</code> as <code>${esc(ctype)}</code>${KNOWN[ctype] ? ', which this reader can render with "Render app formats" on' : ", which only its own app knows how to render"}.` : ' It has no <code>content</code> either, so the body exists only on the original site.'} <a href="${esc(url)}" target="_blank" rel="noopener">Read it on the original site</a>.</div>`}`
-}
-
-function renderDoc(s, d) {
-  const v = d.value
-  const pubName = s.displayName || pubOf(s).value.name, pubIcon = s.iconData || blobUrl(s, pubOf(s).value.icon)
-  const cover = blobUrl(s, v.coverImage)
-  const contribs = (v.contributors || []).map(c => esc(c.displayName || c.did) + (c.role ? ` (${esc(c.role)})` : '')).join(', ')
-  const bsky = v.bskyPostRef?.uri?.match(/^at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)$/)
-  const url = canonical(pubOf(s), d)
-  return `<article>
-    <button class="back" type="button" id="backBtn">← All posts in ${pubIcon ? `<img class="mini" src="${esc(pubIcon)}" alt="">` : `<span class="mini" aria-hidden="true">${esc((pubName || '?').trim()[0])}</span>`} <b>${esc(pubName)}</b></button>
-    ${cover && s.source === 'live' ? `<img class="cover" src="${esc(cover)}" alt="" data-field="coverImage">` : ''}
-    <h2 class="doc-title" data-field="title">${esc(v.title)}</h2>
-    ${v.description && !(v.textContent || '').startsWith(v.description.replace(/[….]+$/, '')) ? `<p class="doc-desc muted" data-field="description">${esc(v.description)}</p>` : ''}
-    <div class="meta muted">
-      <span data-field="publishedAt">${fmtDate(v.publishedAt)}</span>
-      ${v.updatedAt ? `<span data-field="updatedAt">updated ${fmtDate(v.updatedAt)}</span>` : ''}
-      ${contribs ? `<span data-field="contributors">with ${contribs}</span>` : ''}
-    </div>
-    ${v.tags?.length ? `<div class="tags" style="margin-top:10px" data-field="tags">${v.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>` : ''}
-    ${docBody(s, d)}
-    ${pairLink(s, d)}
-    ${d.replies?.length ? `<div class="notice">${plural(d.replies.length, TL + '.post record points', TL + '.post records point')} at this document. Article lens ignores them. Switch to thread lens to read the discussion.</div>` : ''}
-    <footer class="doc-foot">
-      <div class="pub-actions" style="display:flex">
-        <button class="btn" type="button" id="recBtn" data-field="graph.recommend">Recommend</button>
-        <span class="count muted">${d.recommends != null ? plural(d.recommends, 'recommend') : ''}</span>
-        ${bsky ? `<a class="btn ghost" data-field="bskyPostRef" href="https://bsky.app/profile/${bsky[1]}/post/${bsky[2]}" target="_blank" rel="noopener">Comments on Bluesky</a>` : pairOf(s, d) ? '' : `<span class="count muted">No bskyPostRef, so there is nowhere to comment.</span>`}
-      </div>
-      <div class="muted" style="font-size:13px">Canonical URL: <a href="${esc(url)}" target="_blank" rel="noopener" data-field="url + path">${esc(url)}</a></div>
-      <details class="raw"><summary>View the site.standard.document record</summary><pre>${esc(JSON.stringify({ uri: d.uri, value: v }, null, 2))}</pre></details>
-    </footer>
-  </article>`
+  const paras = (d.value.textContent || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
+  return paras.length ? `<div class="body" data-field="textContent">${paras.map(p => `<p>${esc(p)}</p>`).join('')}</div>`
+    : `<div class="notice">This thread has no <code>textContent</code>.</div>`
 }
 
 document.addEventListener('click', e => { if (e.target.closest('#backBtn')) go(cur) })
@@ -684,216 +547,9 @@ function route() {
 }
 addEventListener('hashchange', route)
 $('#pick').onchange = e => go(+e.target.value)
-let showFormats = true, lens = 'article'
-try { if (localStorage.getItem('lens') === 'thread') lens = 'thread' } catch {}
-const syncLens = () => document.querySelectorAll('[data-lens]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lens === lens))
-syncLens()
-document.querySelectorAll('[data-lens]').forEach(b => b.onclick = () => {
-  lens = b.dataset.lens; syncLens()
-  try { localStorage.setItem('lens', lens) } catch {}
-  // a thread site's threads and documents are different lists, so a page open in one lens has no twin in the other
-  if (sites[cur].threads && view.name === 'doc') go(cur); else render()
-})
-try { showFormats = localStorage.getItem('renderFormats') !== 'off' } catch {}
-$('#contentBtn').setAttribute('aria-pressed', showFormats)
-$('#contentBtn').onclick = e => {
-  showFormats = !showFormats; e.target.setAttribute('aria-pressed', showFormats)
-  try { localStorage.setItem('renderFormats', showFormats ? 'on' : 'off') } catch {}
-  render()
-}
-
-/* ---------- renderers for app content formats seen in real records (not part of standard.site) ---------- */
-const KNOWN = { 'pub.leaflet.content': true, 'site.standard.content.markdown': true }
-function renderContent(s, c) {
-  if (!c || !KNOWN[c.$type]) return null
-  try {
-    if (c.$type === 'site.standard.content.markdown') {
-      if (!window.marked || !window.DOMPurify) return null
-      return DOMPurify.sanitize(marked.parse(c.markdown || ''))
-    }
-    if (c.$type === 'pub.leaflet.content') {
-      const pages = c.pages || [], byId = Object.fromEntries(pages.map(p => [p.id, p]))
-      return leafletPage(s, pages[0], byId, 0) || null
-    }
-  } catch (err) { console.warn('content render failed', err) }
-  return null
-}
-const enc = new TextEncoder(), dec = new TextDecoder()
-function richText(text, facets) {
-  if (!text) return ''
-  if (!facets?.length) return esc(text)
-  const bytes = enc.encode(text), cuts = new Set([0, bytes.length])
-  for (const f of facets) { cuts.add(f.index.byteStart); cuts.add(f.index.byteEnd) }
-  const pts = [...cuts].filter(n => n >= 0 && n <= bytes.length).sort((a, b) => a - b)
-  let out = ''
-  for (let i = 0; i < pts.length - 1; i++) {
-    const a = pts[i], b = pts[i + 1]
-    let seg = esc(dec.decode(bytes.slice(a, b)))
-    for (const f of facets) {
-      if (f.index.byteStart > a || f.index.byteEnd < b) continue
-      for (const ft of f.features || []) {
-        const k = (ft.$type || '').split('#')[1]
-        if (k === 'bold') seg = `<strong>${seg}</strong>`
-        else if (k === 'italic') seg = `<em>${seg}</em>`
-        else if (k === 'code') seg = `<code>${seg}</code>`
-        else if (k === 'strikethrough') seg = `<s>${seg}</s>`
-        else if (k === 'underline') seg = `<u>${seg}</u>`
-        else if (k === 'highlight') seg = `<mark>${seg}</mark>`
-        else if (k === 'link' && /^https?:/.test(ft.uri)) seg = `<a href="${esc(ft.uri)}" target="_blank" rel="noopener">${seg}</a>`
-        else if (k === 'didMention') seg = `<a href="https://bsky.app/profile/${esc(ft.did)}" target="_blank" rel="noopener">${seg}</a>`
-        else if (k === 'footnote') seg = `<sup class="fn" title="${esc(ft.contentPlaintext)}">${seg}</sup>`
-      }
-    }
-    out += seg
-  }
-  return out
-}
-function leafletList(s, items, ordered) {
-  const tag = ordered ? 'ol' : 'ul'
-  return `<${tag}>${(items || []).map(li => `<li>${richText(li.content?.plaintext, li.content?.facets)}${li.children?.length ? leafletList(s, li.children, ordered) : ''}</li>`).join('')}</${tag}>`
-}
-function leafletPage(s, page, byId, depth) {
-  if (!page || depth > 3) return ''
-  if (!page.blocks) return `<p class="unsupported">[${esc(page.$type)} page, not rendered]</p>`
-  return page.blocks.map(w => leafletBlock(s, w.block || w, byId, depth)).join('')
-}
-function leafletBlock(s, b, byId, depth) {
-  const k = (b.$type || '').replace('pub.leaflet.blocks.', '')
-  switch (k) {
-    case 'text': return b.plaintext ? `<p>${richText(b.plaintext, b.facets)}</p>` : ''
-    case 'header': { const h = (b.level || 1) <= 2 ? 'h3' : 'h4'; return `<${h}>${richText(b.plaintext, b.facets)}</${h}>` }
-    case 'blockquote': return `<blockquote>${richText(b.plaintext, b.facets)}</blockquote>`
-    case 'code': return `<pre><code>${esc(b.plaintext)}</code></pre>`
-    case 'horizontalRule': return '<hr>'
-    case 'unorderedList': return leafletList(s, b.children, false)
-    case 'orderedList': return leafletList(s, b.children, true)
-    case 'image': { const src = blobUrl(s, b.image); return src ? `<figure><img src="${esc(src)}" alt="${esc(b.alt || '')}" loading="lazy">${b.alt ? `<figcaption>${esc(b.alt)}</figcaption>` : ''}</figure>` : '' }
-    case 'website': return `<a class="card" href="${esc(b.src)}" target="_blank" rel="noopener"><b>${esc(b.title || b.src)}</b>${b.description ? `<span>${esc(b.description)}</span>` : ''}<span>${esc(b.src)}</span></a>`
-    case 'button': return `<p><a class="btn" href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.text || b.url)}</a></p>`
-    case 'iframe': return `<a class="card" href="${esc(b.url)}" target="_blank" rel="noopener"><b>Embedded page</b><span>${esc(b.url)}</span></a>`
-    case 'bskyPost': { const m = b.postRef?.uri?.match(/^at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)$/); return m ? `<a class="card" href="https://bsky.app/profile/${m[1]}/post/${m[2]}" target="_blank" rel="noopener"><b>Bluesky post</b><span>${esc(b.postRef.uri)}</span></a>` : '' }
-    case 'standardSitePost': case 'standardSitePublication': return `<div class="card"><b>${k === 'standardSitePost' ? 'standard.site post' : 'standard.site publication'}</b><span>${esc(b.uri)}</span></div>`
-    case 'page': return byId[b.id] ? `<div class="subpage">${leafletPage(s, byId[b.id], byId, depth + 1)}</div>` : ''
-    default: return `<p class="unsupported">[${esc(b.$type)} block, not rendered]</p>`
-  }
-}
-// images that can't load (blocked in the hosted preview) become a labelled placeholder
-document.addEventListener('error', e => {
-  const img = e.target
-  if (img.tagName !== 'IMG' || !img.closest('.body')) return
-  const ph = document.createElement('span'); ph.className = 'imgph'
-  ph.textContent = `Image${img.alt && img.alt !== 'image' ? `: ${img.alt}` : ''} (couldn't load here)`
-  ;(img.closest('figure') || img).replaceWith(ph)
-}, true)
-
 $('#fieldsBtn').onclick = e => {
   const on = e.target.getAttribute('aria-pressed') !== 'true'
   e.target.setAttribute('aria-pressed', on); $('#site').classList.toggle('fields', on)
-}
-
-/* ---------- live loading (works when the file is opened directly; the hosted preview blocks network calls) ---------- */
-const getJSON = async u => { const r = await fetch(u); if (!r.ok) throw new Error(`${r.status} from ${new URL(u).host}`); return r.json() }
-async function resolveDid(input) {
-  if (input.startsWith('did:')) return input
-  const h = input.replace(/^@/, '')
-  return (await getJSON(`https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=${encodeURIComponent(h)}`)).did
-}
-async function pdsFor(did) {
-  const doc = did.startsWith('did:plc:') ? await getJSON(`https://plc.directory/${did}`) : await getJSON(`https://${did.slice(8)}/.well-known/did.json`)
-  return { pds: doc.service.find(s => s.id.endsWith('#atproto_pds')).serviceEndpoint, handle: (doc.alsoKnownAs?.[0] || '').replace('at://', '') }
-}
-async function listAll(pds, did, coll) {
-  let out = [], cursor = ''
-  for (let i = 0; i < 10; i++) {
-    const d = await getJSON(`${pds}/xrpc/com.atproto.repo.listRecords?repo=${did}&collection=${coll}&limit=100${cursor ? '&cursor=' + cursor : ''}`)
-    out = out.concat(d.records); cursor = d.cursor; if (!cursor || !d.records.length) break
-  }
-  return out
-}
-const countLinks = async (target, coll, path) => {
-  try { return (await getJSON(`https://constellation.microcosm.blue/links/count?target=${encodeURIComponent(target)}&collection=${coll}&path=${path}`)).total } catch { return null }
-}
-async function loadLive(raw) {
-  let input = raw.trim(), pubUri = null, targetUrl = null
-  if (/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(input)) {
-    // a bare domain: try it as a handle first, then as a site
-    try { await resolveDid(input) } catch { input = 'https://' + input }
-  }
-  if (/^https?:\/\//.test(input)) {
-    const u = new URL(input)
-    targetUrl = trimSlash(u.origin + u.pathname)
-    // 1. the standard way: the site's .well-known file (often blocked for browsers by CORS)
-    try {
-      const r = await fetch(`${u.origin}/.well-known/site.standard.publication`)
-      const t = (await r.text()).trim()
-      if (r.ok && t.startsWith('at://')) pubUri = t
-    } catch {}
-    if (pubUri) input = pubUri.split('/')[2]
-    else {
-      // 2. fallback: treat the host or one of its parent domains as the publisher's handle
-      const parts = u.hostname.split('.'), tried = []
-      input = null
-      for (let i = 0; i < parts.length - 1 && !input; i++) {
-        const h = parts.slice(i).join('.'); tried.push(h)
-        status(`Trying ${h} as a handle…`)
-        try { input = await resolveDid(h) } catch (e) { if (e instanceof TypeError) throw e }
-      }
-      if (!input) throw new Error(`${u.host} doesn't let browsers read its /.well-known/site.standard.publication file, and ${tried.join(' and ')} ${tried.length > 1 ? "aren't handles" : "isn't a handle"}. Enter the publisher's handle or the publication's at:// URI instead.`)
-    }
-  } else if (input.startsWith('at://')) { pubUri = input; input = input.split('/')[2] }
-  const did = await resolveDid(input)
-  const { pds, handle } = await pdsFor(did)
-  status(`Reading ${handle || did}…`)
-  const pubs = await listAll(pds, did, 'site.standard.publication')
-  if (!pubs.length) throw new Error('That account has no site.standard.publication records.')
-  const docs = await listAll(pds, did, 'site.standard.document')
-  let targets = pubUri ? pubs.filter(p => p.uri === pubUri) : pubs
-  if (!pubUri && targetUrl) {
-    // pick the publication whose url is the longest prefix of the address entered
-    const match = pubs.filter(p => p.value.url && (targetUrl + '/').startsWith(trimSlash(p.value.url) + '/'))
-      .sort((a, b) => b.value.url.length - a.value.url.length)[0]
-    if (match) targets = [match]
-  }
-  let openDoc = null, first = null
-  for (const p of targets) {
-    const ds = docs.filter(d => [p.uri, trimSlash(p.value.url)].includes(trimSlash(d.value.site)))
-      .sort((a, b) => (b.value.publishedAt || '').localeCompare(a.value.publishedAt || '')).slice(0, 100)
-    const [subs, ...recs] = await Promise.all([countLinks(p.uri, 'site.standard.graph.subscription', '.publication'), ...ds.map(d => countLinks(d.uri, 'site.standard.graph.recommend', '.document'))])
-    ds.forEach((d, i) => d.recommends = recs[i])
-    const entry = { did, handle, pds, iconData: null, publication: p, subscribers: subs, documents: ds, source: 'live' }
-    let at = sites.findIndex(s => s.source === 'live' && s.publication.uri === p.uri)
-    if (at >= 0) sites[at] = entry; else at = sites.push(entry) - 1
-    if (!first) first = at
-    const i = targetUrl ? ds.findIndex(d => canonical(p, d) === targetUrl) : -1
-    if (i >= 0 && !openDoc) openDoc = [at, i]
-  }
-  renderPicker()
-  if (openDoc) go(...openDoc); else go(first)
-  status(`Loaded ${plural(targets.length, 'publication')} from ${handle || did}${pubUri || !targetUrl ? '' : ' (found through the domain\'s handle, since the site\'s .well-known file is closed to browsers)'}.`)
-}
-// an address of a site already loaded opens straight away, with no network needed
-function openKnown(raw) {
-  let u; try { u = new URL(/^https?:\/\//.test(raw.trim()) ? raw.trim() : 'https://' + raw.trim()) } catch { return false }
-  const target = trimSlash(u.origin + u.pathname)
-  for (let s = sites.length - 1; s >= 0; s--) {
-    const site = sites[s], base = trimSlash(site.publication.value.url)
-    const d = site.documents.findIndex(doc => canonical(site.publication, doc) === target)
-    if (d >= 0) { go(s, d); status(`Opened from the ${site.source === 'live' ? 'loaded' : 'built-in'} copy of ${site.publication.value.name}.`); return true }
-    if (target === base) { go(s); status(`Opened the ${site.source === 'live' ? 'loaded' : 'built-in'} copy of ${site.publication.value.name}.`); return true }
-  }
-  return false
-}
-function status(msg, err) { const el = $('#status'); el.textContent = msg; el.classList.toggle('err', !!err) }
-$('#loadForm').onsubmit = async e => {
-  e.preventDefault()
-  const v = $('#loadInput').value; if (!v.trim()) return
-  if (openKnown(v)) return
-  status('Resolving…')
-  try { await loadLive(v) }
-  catch (err) {
-    const blocked = err instanceof TypeError
-    status(blocked ? 'This hosted preview blocks all network requests, so it can only show the built-in sites. Open threads-lexicon-website.html from the project files in a browser to load any publication live.' : err.message, true)
-  }
 }
 
 renderPicker(); route()

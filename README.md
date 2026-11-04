@@ -26,20 +26,17 @@ The lexicon would live under `community.lexicon.*`, run by Lexicon Community, as
 
 ## What the demo shows
 
-The demo reads records the way an app would and renders them as a website. The four sites are:
+The demo is a pure threads-lexicon demo. It reads `community.lexicon.thread.*` records the way an app would and renders them as a website. It shows one community in two places:
 
 - **our.atmosphere.community**: Atmosphere Community's own site. It's simulated from the forum's public Discourse JSON: 30 topics as `thread` records in their channels, with every reply as a `post`. Four articles are published as `site.standard.document`, and one of them is also a thread. The board is a dense grid.
 - **mu.social/space/@atmosphere.community**: the same community, read by a different client (mu.social's Group Spaces). It uses the same records, so threads, replies and follows are shared. The board is cards.
-- **lab.leaflet.pub** and **notes.erlend.sh**: real standard.site snapshots of two blogs, taken 27 Oct 2026.
 
 Controls at the top:
 
-- **Article lens / Thread lens** switch which lexicon the page reads. In the article lens it's a standard.site reader. In the thread lens it reads `community.lexicon.thread.*`, and any blog post can be shown as a thread with comments.
+- **Site** switches between the two.
 - **Show record fields** labels every element with the record field it comes from. Hovering a label highlights what it labels. Counts, posters and latest activity are marked *derived*: an indexer computes them from posts, so they aren't stored in any record.
-- **Render app formats**: standard.site keeps plain text in `textContent` and an app's own rich format in `content`. When this is on, the demo renders the formats it knows (Leaflet's blocks, markdown). When it's off, you see only what a plain standard.site reader sees. For Leaflet that's nothing, because Leaflet writes no `textContent`.
-- **Load live** fetches a real publication by handle, DID or URL. This is the only part of the demo that uses the network.
 
-Other things to try: click a channel chip to narrow the board to it, follow a group, channel or thread to see the subscription records it would write, and open "Notes from the October meetup" to switch between its article and thread versions.
+Other things to try: click a channel chip to narrow the board to it, follow a group, channel or thread to see the subscription records it would write, and open "Notes from the October meetup", a thread that is also published as an article. The demo makes no network requests.
 
 A thread with no written `description` shows the start of its opening post on the board: up to 300 characters and at most 3 paragraphs.
 
@@ -53,8 +50,8 @@ python3 build.py          # writes ../threads-lexicon-website.html
 ```
 
 - `template.html` is the whole app: HTML, CSS and plain JavaScript, with no framework.
-- `build.py` loads the blog snapshots (`snapshot.json`) and the Discourse data (`discourse-sim.json`). It converts the Discourse data into `community.lexicon.thread.*` records, adds the articles from `mu.py`, and inlines everything into the template.
-- `fetch-inline.py` refreshes the inlined assets: marked and DOMPurify, the fonts (IBM Plex Mono, Newsreader and Public Sans) and the blogs' images. It's the only step that needs the network. Run it again after changing `snapshot.json`.
+- `build.py` loads the Discourse data (`discourse-sim.json`) and converts it into `community.lexicon.thread.*` records. It adds the articles from `mu.py`, writes them to `snapshot.json`, and inlines everything into the template.
+- `fetch-inline.py` refreshes the inlined fonts (IBM Plex Mono, Newsreader and Public Sans). It's the only step that needs the network.
 
 ## What's in this repo
 
@@ -68,4 +65,4 @@ python3 build.py          # writes ../threads-lexicon-website.html
 
 ## Credits
 
-The Atmosphere Community content comes from public posts on [discourse.atmosphere.community](https://discourse.atmosphere.community). The blog content belongs to [Leaflet](https://lab.leaflet.pub) and [notes.erlend.sh](https://notes.erlend.sh). Fonts are under the SIL Open Font License. marked is MIT-licensed, and DOMPurify is under Apache 2.0 or MPL 2.0.
+The Atmosphere Community content comes from public posts on [discourse.atmosphere.community](https://discourse.atmosphere.community). Fonts are under the SIL Open Font License.

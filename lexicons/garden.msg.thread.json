@@ -5,7 +5,7 @@
     "main": {
       "type": "record",
       "key": "tid",
-      "description": "A titled discussion thread, such as a forum thread or a chat channel. Written by its author. Forked from site.standard.document, but only as a container: it holds the title and where the thread lives, and has no body. Every message in it is a garden.msg.post, including the opening post (OP), which is the thread author's first post in it that answers no other post. A thread can have no OP, such as a channel whose chat is just its posts.",
+      "description": "A titled discussion thread. Its messages, the opening post included, are garden.msg.post records.",
       "record": {
         "type": "object",
         "required": [

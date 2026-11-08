@@ -1,6 +1,6 @@
 {
-  "$type": "community.lexicon.thread.post",
-  "thread": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/community.lexicon.thread.thread/3m4mirror0001",
+  "$type": "garden.msg.post",
+  "thread": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/garden.msg.thread/3m4mirror0001",
   "document": "at://did:plc:btxrwcaeyodrap5mnjw2fvmz/site.standard.document/3mwehnrqsf22g",
   "textContent": "How teachers and students are using Leaflet this term.",
   "createdAt": "2026-09-25T19:05:46.382Z"

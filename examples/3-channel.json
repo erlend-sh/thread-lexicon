@@ -1,6 +1,6 @@
 {
-  "$type": "community.lexicon.thread.channel",
-  "thread": "at://did:plc:forum123/community.lexicon.thread.thread/3m4chan0000a",
+  "$type": "garden.msg.channel",
+  "thread": "at://did:plc:forum123/garden.msg.thread/3m4chan0000a",
   "section": "Building",
   "position": 0,
   "icon": "#",

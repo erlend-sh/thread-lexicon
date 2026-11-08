@@ -1,0 +1,11 @@
+{
+  "$type": "garden.msg.post",
+  "thread": "at://did:plc:alice123/garden.msg.thread/3m4thread000b",
+  "replyTo": "at://did:plc:bob456/garden.msg.post/3m4post0000r",
+  "textContent": "Agreed. Two things to check first:\n\n1. the root and parent mapping\n2. whether votes need a direction",
+  "content": {
+    "$type": "garden.msg.defs#markdown",
+    "text": "Agreed. Two things to check **first**:\n\n1. the root and parent mapping\n2. whether votes need a `direction`"
+  },
+  "createdAt": "2026-10-22T21:40:00.000Z"
+}

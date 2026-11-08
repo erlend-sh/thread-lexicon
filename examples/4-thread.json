@@ -1,7 +1,7 @@
 {
-  "$type": "community.lexicon.thread.thread",
-  "group": "at://did:plc:forum123/community.lexicon.thread.group/self",
-  "parent": "at://did:plc:forum123/community.lexicon.thread.thread/3m4chan0000a",
+  "$type": "garden.msg.thread",
+  "group": "at://did:plc:forum123/garden.msg.group/self",
+  "parent": "at://did:plc:forum123/garden.msg.thread/3m4chan0000a",
   "path": "/t/p4x8n2r6c1/which-board-theme-should-we-default-to",
   "title": "Which board theme should we default to?",
   "description": "Vote below. Classic or midnight?",

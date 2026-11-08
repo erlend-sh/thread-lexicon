@@ -1,6 +1,6 @@
 {
-  "$type": "community.lexicon.thread.thread",
-  "group": "at://did:plc:forum123/community.lexicon.thread.group/self",
+  "$type": "garden.msg.thread",
+  "group": "at://did:plc:forum123/garden.msg.group/self",
   "path": "/c/k3v9qz2m7a/lexicons",
   "title": "lexicons",
   "description": "Schema design, naming and interop.",

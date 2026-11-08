@@ -1,5 +1,5 @@
 {
-  "$type": "community.lexicon.thread.group",
+  "$type": "garden.msg.group",
   "url": "https://forum.example",
   "name": "Example Forum",
   "description": "A forum for people building on the Atmosphere."

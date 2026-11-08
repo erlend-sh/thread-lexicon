@@ -1,10 +1,10 @@
 {
-  "$type": "community.lexicon.thread.post",
-  "thread": "at://did:plc:alice123/community.lexicon.thread.thread/3m4thread000b",
+  "$type": "garden.msg.post",
+  "thread": "at://did:plc:alice123/garden.msg.thread/3m4thread000b",
   "textContent": "Vote below. Classic or midnight?",
   "content": {
-    "$type": "dev.atmoboard.defs#markdown",
-    "markdown": "Vote below. **Classic** or **midnight**?"
+    "$type": "garden.msg.defs#markdown",
+    "text": "Vote below. **Classic** or **midnight**?"
   },
   "createdAt": "2026-10-22T21:00:00.000Z"
 }

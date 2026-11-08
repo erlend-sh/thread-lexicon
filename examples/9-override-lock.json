@@ -1,6 +1,6 @@
 {
-  "$type": "community.lexicon.thread.override",
-  "subject": "at://did:plc:alice123/community.lexicon.thread.thread/3m4thread000b",
+  "$type": "garden.msg.override",
+  "subject": "at://did:plc:alice123/garden.msg.thread/3m4thread000b",
   "action": "lock",
   "until": "2026-10-30T00:00:00.000Z",
   "actor": "did:plc:mod456",

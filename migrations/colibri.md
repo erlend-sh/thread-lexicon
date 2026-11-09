@@ -1,6 +1,6 @@
 # Colibri → garden.msg
 
-Colibri (`social.colibri.beta.*`) is a Discord-style chat app built on atproto Spaces. Communities, channels and threads are spaces, each with a `self` record written by the community. Messages and reactions live in members' permissioned repos for the channel's space. Of the five apps, it's the closest to garden.msg's group model, but it depends most on how Spaces work.
+Colibri (`social.colibri.beta.*`) is a Discord-style chat app built on atproto Spaces. Communities, channels and threads are spaces, each with a `self` record written by the community. Messages and reactions live in members' permissioned repos for the channel's space. Of these apps, it's the closest to garden.msg's group model, but it depends most on how Spaces work.
 
 ## Record mapping
 
